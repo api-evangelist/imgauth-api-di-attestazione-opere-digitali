@@ -1,0 +1,89 @@
+name: imgauth — API di attestazione opere digitali
+description: >-
+  Digital-work attestation and proof-of-existence service by Spazio Genesi ETS. Clients compute a SHA-256 fingerprint
+  locally (file bytes never leave the device) and receive a signed PDF certificate, an RFC 3161 timestamp, and an
+  OpenTimestamps/Bitcoin anchor. Exposes a public REST API (OpenAPI 3.0.3) and a hosted remote MCP server for agents.
+url: https://imgauth-api-di-attestazione-opere-digitali.apievangelist.com/apis.yml
+created: '2026-07-19'
+modified: '2026-07-19'
+specificationVersion: '0.21'
+tags:
+  - digital notarization
+  - timestamping
+  - proof-of-existence
+  - content authenticity
+  - provenance
+  - copyright
+  - IP protection
+  - blockchain
+  - Bitcoin
+  - OpenTimestamps
+  - security
+  - document
+  - e-signature
+  - MCP
+apis:
+  - name: imgauth REST API
+    description: >-
+      Attestation/proof-of-existence REST API. Client-side SHA-256 hashing, signed PDF certificates, RFC 3161
+      timestamps, OpenTimestamps/Bitcoin anchoring, verifiable certificate pages, and status telemetry. Field names are
+      Italian by design.
+    humanURL: https://imgauth.spaziogenesi.org
+    baseURL: https://imgauth.spaziogenesi.org
+    tags:
+      - digital notarization
+      - timestamping
+      - proof-of-existence
+      - content authenticity
+      - provenance
+      - copyright
+      - IP protection
+      - blockchain
+      - Bitcoin
+      - OpenTimestamps
+      - security
+      - document
+      - e-signature
+      - MCP
+    properties:
+      - type: OpenAPI
+        url: https://imgauth.spaziogenesi.org/openapi.json
+      - type: Documentation
+        url: https://imgauth.spaziogenesi.org/docs
+  - name: imgauth Remote MCP Server
+    description: >-
+      Hosted, zero-install MCP server (Streamable HTTP) exposing the attestation service to MCP-capable agents. Tools:
+      attest_file, verify_file, verify_certificate, get_certificate_pdf, check_anchor, service_status, authorize.
+      Credentials via device flow or Authorization: Bearer sg_k_… header.
+    humanURL: https://github.com/SPAZIO-GENESI/attest-mcp-remote
+    baseURL: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+    tags:
+      - digital notarization
+      - timestamping
+      - proof-of-existence
+      - content authenticity
+      - provenance
+      - copyright
+      - IP protection
+      - blockchain
+      - Bitcoin
+      - OpenTimestamps
+      - security
+      - document
+      - e-signature
+      - MCP
+    properties:
+      - type: MCP
+        url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+      - type: Documentation
+        url: https://imgauth.spaziogenesi.org/docs
+maintainers:
+  - FN: Spazio Genesi ETS
+    url: https://spaziogenesi.org
+  - FN: SPAZIO-GENESI (GitHub)
+    url: https://github.com/SPAZIO-GENESI/imgauth
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 95
+  at: '2026-07-19T13:45:33.951Z'
