@@ -73,7 +73,7 @@ apis:
       - e-signature
       - MCP
     properties:
-      - type: MCP
+      - type: MCPServer
         url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
       - type: Documentation
         url: https://imgauth.spaziogenesi.org/docs
