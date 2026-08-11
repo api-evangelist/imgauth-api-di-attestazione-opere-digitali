@@ -1,12 +1,20 @@
 name: imgauth — API di attestazione opere digitali
 description: >-
-  Digital-work attestation and proof-of-existence service by Spazio Genesi ETS. Clients compute a SHA-256 fingerprint
-  locally (file bytes never leave the device) and receive a signed PDF certificate, an RFC 3161 timestamp, and an
-  OpenTimestamps/Bitcoin anchor. Exposes a public REST API (OpenAPI 3.0.3) and a hosted remote MCP server for agents.
+  Digital-work attestation and proof-of-existence service operated by Spazio Genesi ETS, an Italian
+  non-profit (third-sector entity). The client computes a SHA-256 fingerprint locally and sends only the
+  64-hex hash — file bytes never leave the device. The service binds that fingerprint to a signed
+  server-side timestamp (HMAC), issues a PAdES B-LT signed PDF certificate carrying an RFC 3161 timestamp
+  from an Adobe AATL-recognised TSA, and anchors the fingerprint in Bitcoin through OpenTimestamps across
+  four independent calendars. Verification is free and unlimited for anyone, and the proof of existence
+  never expires. Exposes an 18-operation public REST API (OpenAPI 3.0.3, served at the API host root), a
+  hosted zero-install remote MCP server whose eight tools answer tools/list anonymously, an sg-attest CLI,
+  a GitHub Action, embeddable SVG badges and three CORS-open public status endpoints. The API contract is
+  in Italian by design. Positioned explicitly as a NON-QUALIFIED attestation under eIDAS 2.0.
 url: https://imgauth-api-di-attestazione-opere-digitali.apievangelist.com/apis.yml
 created: '2026-07-19'
-modified: '2026-07-19'
+modified: '2026-08-11'
 specificationVersion: '0.21'
+image: https://attestazione.spaziogenesi.org/og.png
 tags:
   - digital notarization
   - timestamping
@@ -47,14 +55,22 @@ apis:
       - MCP
     properties:
       - type: OpenAPI
+        url: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+      - type: OpenAPI
         url: https://imgauth.spaziogenesi.org/openapi.json
+      - type: Overlay
+        url: overlays/imgauth-api-di-attestazione-opere-digitali-openapi-overlay.yaml
       - type: Documentation
-        url: https://imgauth.spaziogenesi.org/docs
+        url: https://attestazione.spaziogenesi.org/en/developer/
+      - type: APIReference
+        url: https://attestazione.spaziogenesi.org/docs/
   - name: imgauth Remote MCP Server
     description: >-
-      Hosted, zero-install MCP server (Streamable HTTP) exposing the attestation service to MCP-capable agents. Tools:
-      attest_file, verify_file, verify_certificate, get_certificate_pdf, check_anchor, service_status, authorize.
-      Credentials via device flow or Authorization: Bearer sg_k_… header.
+      Hosted, zero-install MCP server (Streamable HTTP, protocol 2025-06-18) exposing the attestation service
+      to MCP-capable agents. The eight tools were read live from tools/list on 2026-08-11: service_status,
+      check_anchor, verify_attestation, lookup_certificate (public, no credential) plus authorize,
+      complete_authorization, attest_hash, create_certificate_pdf (credentialed). Credentials via device flow
+      or an Authorization: Bearer sg_k_… header. File bytes are never accepted as tool arguments.
     humanURL: https://github.com/SPAZIO-GENESI/attest-mcp-remote
     baseURL: https://attest-mcp-remote.it-e3f.workers.dev/mcp
     tags:
@@ -75,10 +91,15 @@ apis:
     properties:
       - type: MCPServer
         url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+      - type: MCPServer
+        url: mcp/imgauth-api-di-attestazione-opere-digitali-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/imgauth-api-di-attestazione-opere-digitali-tool-crosswalk.yml
       - type: Documentation
-        url: https://imgauth.spaziogenesi.org/docs
+        url: https://attestazione.spaziogenesi.org/en/developer/
 maintainers:
   - FN: Spazio Genesi ETS
+    email: it@spaziogenesi.org
     url: https://spaziogenesi.org
   - FN: SPAZIO-GENESI (GitHub)
     url: https://github.com/SPAZIO-GENESI/imgauth
@@ -87,3 +108,79 @@ generated:
   model: claude-opus-4-8
   confidence: 95
   at: '2026-07-19T13:45:33.951Z'
+common:
+- type: TrustCenter
+  url: security/imgauth-api-di-attestazione-opere-digitali-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/imgauth-api-di-attestazione-opere-digitali-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/imgauth-api-di-attestazione-opere-digitali-domain-security.yml
+- type: Authentication
+  url: authentication/imgauth-api-di-attestazione-opere-digitali-authentication.yml
+- type: DeveloperPortal
+  url: https://attestazione.spaziogenesi.org/en/developer/
+- type: Documentation
+  url: https://attestazione.spaziogenesi.org/en/developer/
+- type: APIReference
+  url: https://attestazione.spaziogenesi.org/docs/
+- type: GettingStarted
+  url: https://attestazione.spaziogenesi.org/en/developer/keys/
+- type: SignUp
+  url: https://attestazione.spaziogenesi.org/en/developer/keys/
+- type: Pricing
+  url: https://attestazione.spaziogenesi.org/professionale/
+- type: TermsOfService
+  url: https://attestazione.spaziogenesi.org/en/condizioni/
+- type: PrivacyPolicy
+  url: https://attestazione.spaziogenesi.org/en/privacy.html
+- type: Support
+  url: mailto:it@spaziogenesi.org
+- type: GitHubOrganization
+  url: https://github.com/SPAZIO-GENESI
+- type: SourceCode
+  url: https://github.com/SPAZIO-GENESI/imgauth
+- type: WellKnown
+  url: well-known/imgauth-api-di-attestazione-opere-digitali-well-known.yml
+- type: SecurityTxt
+  url: well-known/imgauth-api-di-attestazione-opere-digitali-security.txt
+- type: Security
+  url: https://attestazione.spaziogenesi.org/sicurezza/
+- type: Compliance
+  url: https://trust.spaziogenesi.org/
+- type: Packages
+  url: packages/imgauth-api-di-attestazione-opere-digitali-packages.yml
+- type: SDKs
+  url: packages/imgauth-api-di-attestazione-opere-digitali-packages.yml
+- type: CLI
+  url: cli/imgauth-api-di-attestazione-opere-digitali-cli.yml
+- type: Components
+  url: components/imgauth-api-di-attestazione-opere-digitali-components.yml
+- type: LLMsTxt
+  url: llms/imgauth-api-di-attestazione-opere-digitali-llms.txt
+- type: Conformance
+  url: conformance/imgauth-api-di-attestazione-opere-digitali-conformance.yml
+- type: ErrorCatalog
+  url: errors/imgauth-api-di-attestazione-opere-digitali-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/imgauth-api-di-attestazione-opere-digitali-lifecycle.yml
+- type: StatusPage
+  url: https://attestazione.spaziogenesi.org/status/
+- type: ChangeLog
+  url: changelog/imgauth-api-di-attestazione-opere-digitali-changelog.yml
+- type: ChangeLog
+  url: https://attestazione.spaziogenesi.org/changelog/
+- type: Conventions
+  url: conventions/imgauth-api-di-attestazione-opere-digitali-conventions.yml
+- type: DataModel
+  url: data-model/imgauth-api-di-attestazione-opere-digitali-data-model.yml
+- type: Plans
+  url: plans/imgauth-api-di-attestazione-opere-digitali-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/imgauth-api-di-attestazione-opere-digitali-rate-limits.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-11'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1

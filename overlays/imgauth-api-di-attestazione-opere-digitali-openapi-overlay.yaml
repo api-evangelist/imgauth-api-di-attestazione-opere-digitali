@@ -1,0 +1,159 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for imgauth — API di attestazione opere digitali
+  version: 1.0.0
+x-generated: '2026-08-11'
+x-method: generated
+x-source: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+x-note: >-
+  The harvested contract (OpenAPI 3.0.3, info.version 1.34.1) is complete and well described in prose, but
+  it declares NO operationId on any of its 18 operations and NO tags at all. That is what this overlay
+  repairs: it names every operation and groups it, so the spec can be referenced, generated from and
+  rendered by resource. The original is never mutated — these are API Evangelist's additions, not the
+  provider's claims. The operationIds are our proposal; if the provider adopts them, this overlay should
+  be retired rather than kept in parallel.
+extends: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: '2026-08-11'
+      x-contract-language: it
+      x-privacy-model: >-
+        client-side SHA-256; file bytes never transit except on the legacy inline-base64 path
+  - target: $
+    update:
+      tags:
+        - name: Attestazione
+        - name: Autorizzazione
+        - name: Badge
+        - name: Certificati
+        - name: Integrazioni
+        - name: Service
+        - name: Stato
+        - name: Verifica
+  - target: $.paths['/ping'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: ping
+      tags: [Service]
+  - target: $.paths['/api/hash'].post
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: attestaHash
+      tags: [Attestazione]
+  - target: $.paths['/api/verify'].post
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: verificaAttestazione
+      tags: [Verifica]
+  - target: $.paths['/api/cert-pdf'].post
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: generaCertificatoPdf
+      tags: [Certificati]
+  - target: $.paths['/api/ots'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: recuperaProvaOts
+      tags: [Verifica]
+  - target: $.paths['/api/cert'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: recuperaCertificato
+      tags: [Certificati]
+  - target: $.paths['/api/badge'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: badgeOperaAttestata
+      tags: [Badge]
+  - target: $.paths['/api/badge/integration'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: badgeIntegrazione
+      tags: [Badge]
+  - target: $.paths['/api/status'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: statoServizi
+      tags: [Stato]
+  - target: $.paths['/api/status-history'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: storicoStato
+      tags: [Stato]
+  - target: $.paths['/api/health-log'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: registroSalute
+      tags: [Stato]
+  - target: $.paths['/api/integrations'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: elencoIntegrazioni
+      tags: [Integrazioni]
+  - target: $.paths['/integrazioni/logo/{id}'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: logoIntegrazione
+      tags: [Integrazioni]
+  - target: $.paths['/c/{hash}'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: paginaCertificato
+      tags: [Certificati]
+  - target: $.paths['/api/agent/authorize'].post
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: avviaDeviceFlow
+      tags: [Autorizzazione]
+  - target: $.paths['/agent/authorize'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: paginaAutorizzazione
+      tags: [Autorizzazione]
+  - target: $.paths['/api/agent/approve'].post
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: approvaDeviceFlow
+      tags: [Autorizzazione]
+  - target: $.paths['/api/agent/token'].get
+    description: >-
+      The published contract declares no operationId here, so nothing can reference this operation by a
+      stable name. Assign one, and group it under a tag.
+    update:
+      operationId: recuperaTokenDeviceFlow
+      tags: [Autorizzazione]

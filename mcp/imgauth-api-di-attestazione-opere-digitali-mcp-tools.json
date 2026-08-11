@@ -1,0 +1,196 @@
+{
+  "tools": [
+    {
+      "name": "service_status",
+      "description": "Health of the Spazio Genesi attestation service components: worker (attestation engine), archive (certificate storage), signer (PDF cryptographic signature), anchor (Bitcoin/OpenTimestamps calendars). Values: ok | degraded | down | n/d.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "check_anchor",
+      "description": "Check whether a work's SHA-256 fingerprint has an OpenTimestamps proof anchored in Bitcoin. The proof is created at attestation time and matures (pending → Bitcoin-confirmed) within a few hours.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "description": "SHA-256 fingerprint of the work: 64 hexadecimal characters. Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot."
+          }
+        },
+        "required": [
+          "sha256"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "verify_attestation",
+      "description": "Verify the server HMAC signature of an attestation issued by the Spazio Genesi service. Confirms that the attestation string (fingerprint + timestamp) and any declared metadata are authentic and untampered. Note: this checks the SIGNATURE only. Whether a given file matches the fingerprint must be checked locally by re-hashing the file. If the certificate carried declared metadata (title/author/year/notes), they must be provided EXACTLY as printed for the signature to verify.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "description": "SHA-256 fingerprint of the work: 64 hexadecimal characters. Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot."
+          },
+          "attestazione": {
+            "type": "string",
+            "description": "The attestation string exactly as printed on the certificate: \"SHA-256:<hash>@<ISO timestamp>Z\""
+          },
+          "hmac": {
+            "type": "string",
+            "description": "The server HMAC signature exactly as printed on the certificate (base64, 44 characters ending with '=')."
+          },
+          "titolo": {
+            "description": "Declared title, exactly as printed (only if the certificate shows it).",
+            "type": "string"
+          },
+          "autore": {
+            "description": "Declared author, exactly as printed (only if the certificate shows it).",
+            "type": "string"
+          },
+          "anno": {
+            "description": "Declared year/version, exactly as printed (only if the certificate shows it).",
+            "type": "string"
+          },
+          "note": {
+            "description": "Declared notes, exactly as printed (only if the certificate shows them).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sha256",
+          "attestazione",
+          "hmac"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "lookup_certificate",
+      "description": "Look up whether a work's SHA-256 fingerprint has an attestation certificate in the public archive, and get its permanent links (public certificate page, PDF download, OpenTimestamps proof, browser verification). Trust model: this information is reachable only by whoever knows the fingerprint.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "description": "SHA-256 fingerprint of the work: 64 hexadecimal characters. Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot."
+          }
+        },
+        "required": [
+          "sha256"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "authorize",
+      "description": "Start the device-flow authorization to attest works in this session (up to 20 attestations, 24h). Returns a link the USER must open in a browser and approve (anti-bot check included). After the user approves, call `complete_authorization`. Not needed if the connection already carries an API key header, or for verification tools.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "complete_authorization",
+      "description": "Complete the device-flow authorization after the user approved in the browser. Polls the service briefly; if approval hasn't happened yet, just call this tool again.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "attest_hash",
+      "description": "Attest a work: the service binds the SHA-256 fingerprint to a server-side timestamp and signs it (HMAC). Requires a credential (device flow via `authorize`, or an API key header). Optional declared metadata (title/author/year/notes) are normalized and BOUND by the signature — immutable after issuance, but they remain self-declared (they don't prove authorship). Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "description": "SHA-256 fingerprint of the work: 64 hexadecimal characters. Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot."
+          },
+          "name": {
+            "description": "File name (descriptive only, shown on the certificate).",
+            "type": "string"
+          },
+          "size": {
+            "description": "File size in bytes (descriptive only).",
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "type": {
+            "description": "MIME type (descriptive only).",
+            "type": "string"
+          },
+          "titolo": {
+            "description": "Declared title of the work (bound by the signature).",
+            "type": "string"
+          },
+          "autore": {
+            "description": "Declared author (bound by the signature).",
+            "type": "string"
+          },
+          "anno": {
+            "description": "Declared year/version (bound by the signature).",
+            "type": "string"
+          },
+          "note": {
+            "description": "Declared notes (bound by the signature).",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sha256"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "create_certificate_pdf",
+      "description": "Generate and archive the certificate PDF for a fingerprint attested in this session with `attest_hash`. The PDF is cryptographically signed, anchored in Bitcoin (OpenTimestamps) and archived server-side; this tool returns the permanent links (the PDF itself is downloadable from its URL — it is never inlined here).",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "description": "SHA-256 fingerprint of the work: 64 hexadecimal characters. Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot."
+          }
+        },
+        "required": [
+          "sha256"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ]
+}

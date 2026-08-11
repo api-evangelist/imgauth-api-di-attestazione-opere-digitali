@@ -1,0 +1,64 @@
+generated: '2026-08-11'
+method: searched
+source: https://registry.npmjs.org/@spazio-genesi%2Fattest-mcp
+docs: https://attestazione.spaziogenesi.org/en/developer/
+note: >-
+  One first-party npm package carries the entire client surface — it ships THREE binaries (the stdio MCP
+  server, its setup helper, and the sg-attest CLI). There is no language SDK for the REST API itself in
+  any registry: no PyPI, RubyGems, crates.io, Packagist, NuGet, Maven or Go module was found under
+  Spazio Genesi. A caller in any other language talks to the OpenAPI directly. The npm package version
+  (0.4.1, 2026-07-24) is current relative to the service — it post-dates the last changelog entry — so
+  there is no abandonment signal here.
+  CAUTION: an unrelated npm package named plain `attest-mcp` (1.0.0, published 2026-06-07 by
+  github.com/attestagents) is NOT first-party and is deliberately excluded.
+packages:
+  - language: javascript
+    registry: npm
+    name: '@spazio-genesi/attest-mcp'
+    url: https://www.npmjs.com/package/@spazio-genesi/attest-mcp
+    install: npx -y @spazio-genesi/attest-mcp
+    official: true
+    version: 0.4.1
+    published: '2026-07-24'
+    license: MIT
+    repository: https://github.com/SPAZIO-GENESI/attest-mcp
+    provides:
+      - 'attest-mcp — stdio MCP server (7 tools)'
+      - 'attest-mcp-setup — client configuration helper'
+      - 'sg-attest — command-line attestation client'
+    release_history: '0.1.0 → 0.4.1, nine releases between the first publish and 2026-07-24'
+  - language: yaml
+    registry: github-actions
+    name: SPAZIO-GENESI/attest-action
+    url: https://github.com/SPAZIO-GENESI/attest-action
+    install: 'uses: SPAZIO-GENESI/attest-action@v1'
+    official: true
+    version: v1
+    published: null
+    license: MIT
+    note: >-
+      Version is a floating major tag (v1), so a consumer cannot tell from the reference which commit they
+      are pinned to; the GitHub releases API was rate-limited during this pass, so no release date was read.
+      Recorded as checked-with-nothing-to-record rather than omitted.
+  - language: binary
+    registry: cdn
+    name: sg-attest standalone executables
+    url: https://attestazione.spaziogenesi.org/en/developer/cli/
+    install: download from GitHub Releases
+    official: true
+    version: null
+    published: null
+    note: >-
+      Six prebuilt binaries (Linux x64/arm64, macOS Intel/Apple Silicon, Windows x64/arm64) distributed
+      from GitHub Releases, requiring no Node.js or registry access. The download links are not
+      version-pinned on the docs page and the releases API was rate-limited during this pass, so the
+      shipped version could not be read — an honest gap, and one a consumer hits too.
+registries_checked:
+  - {registry: npm, result: '1 first-party package'}
+  - {registry: pypi, result: 'none — autart-signer is a Python repo but is not published to PyPI (404)'}
+  - {registry: rubygems, result: none}
+  - {registry: crates.io, result: none}
+  - {registry: packagist, result: none}
+  - {registry: nuget, result: none}
+  - {registry: maven-central, result: none}
+  - {registry: pkg.go.dev, result: none}

@@ -1,0 +1,125 @@
+generated: '2026-08-11'
+method: derived
+source: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+format: bespoke
+rfc9457: false
+note: >-
+  The API does NOT use RFC 9457 application/problem+json. Every documented 4xx/5xx returns the same
+  minimal envelope, components.schemas.Errore = an object with a single free-text `error` string. There is
+  no machine-readable error code, no type URI and no remediation field, so an agent can branch on the HTTP
+  status but not on the specific cause. The provider publishes no separate error-reference page; the
+  response descriptions in the contract below are the whole published error surface.
+envelope:
+  media_type: application/json
+  schema: components.schemas.Errore
+  fields:
+    - name: error
+      type: string
+      description: human-readable message, Italian by design
+problems:
+  - status: 400
+    title: >-
+      Campo mancante o malformato
+    variants:
+      - >-
+        attestazione incoerente con sha256/timestamp_iso
+      - >-
+        codice non valido
+      - >-
+        codice o token mancante
+      - >-
+        hash malformato
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/hash
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/cert-pdf
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/ots
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/cert
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /agent/authorize
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/approve
+  - status: 403
+    title: >-
+      Credenziale agente invalida, o verifica anti-bot non superata
+    variants:
+      - >-
+        HMAC non valido
+      - >-
+        verifica anti-bot non superata
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/hash
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/cert-pdf
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/approve
+  - status: 404
+    title: >-
+      Non in archivio
+    variants:
+      - >-
+        Non trovato (id inesistente, non approvato, o servizio non disponibile)
+      - >-
+        certificato assente
+      - >-
+        prova assente
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/ots
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/cert
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /integrazioni/logo/{id}
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /c/{hash}
+  - status: 409
+    title: >-
+      richiesta già gestita
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/approve
+  - status: 410
+    title: >-
+      richiesta scaduta
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /agent/authorize
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/approve
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/agent/token
+  - status: 413
+    title: >-
+      File troppo grande (solo percorso legacy, max 100 MB)
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/hash
+  - status: 429
+    title: >-
+      Quota credenziale esaurita, o rate limit per-IP (60/60s)
+    variants:
+      - >-
+        Rate limit per-IP (10/60s, il più basso dell'API: endpoint costoso)
+      - >-
+        Rate limit per-IP (60/60s)
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/hash
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/verify
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/cert-pdf
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/ots
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/cert
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/integrations
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/authorize
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/approve
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/agent/token
+  - status: 503
+    title: >-
+      HMAC_SECRET non configurato (fail-closed), oppure firma temporaneamente non disponibile (es. deploy del firmatario in corso) — messaggio generico, riprovare tra qualche minuto
+    variants:
+      - >-
+        archivio non configurato
+    envelope: '{"error": "<string>"}'
+    schema: components.schemas.Errore
+    source_operations:
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/cert-pdf
+      - openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/cert

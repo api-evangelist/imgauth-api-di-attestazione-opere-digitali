@@ -1,0 +1,82 @@
+generated: '2026-08-11'
+method: searched
+status: published
+source: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+docs: https://attestazione.spaziogenesi.org/en/developer/
+server:
+  name: spazio-genesi-attestation
+  version: 1.0.0
+  transport: http
+  protocol: Streamable HTTP
+  protocol_version: '2025-06-18'
+  url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+  repository: https://github.com/SPAZIO-GENESI/attest-mcp-remote
+  license: MIT
+capabilities:
+  tools:
+    listChanged: true
+introspection:
+  method: JSON-RPC initialize + tools/list over Streamable HTTP
+  gated: false
+  note: >-
+    tools/list answers ANONYMOUSLY once an Mcp-Session-Id is established via initialize — a bare
+    tools/list without the session header returns -32000 "Mcp-Session-Id header is required", which is a
+    handshake requirement, not an auth wall. The 8 tool schemas below are the LIVE server response,
+    captured verbatim in imgauth-api-di-attestazione-opere-digitali-mcp-tools.json. Four tools are public
+    (service_status, check_anchor, verify_attestation, lookup_certificate); four require a credential
+    obtained through the device flow or an Authorization: Bearer sg_k_... header.
+local_server:
+  package: '@spazio-genesi/attest-mcp'
+  registry: npm
+  install: npx -y @spazio-genesi/attest-mcp
+  note: stdio sibling of the hosted server; also ships the sg-attest CLI
+tools:
+  - name: service_status
+    description: >-
+      Health of the Spazio Genesi attestation service components: worker (attestation engine), archive (certificate storage), signer (PDF cryptographic signature), anchor (Bitcoin/OpenTimestamps calendars). Values: ok | degraded | down | n/d.
+    input_properties: []
+    required: []
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/status
+  - name: check_anchor
+    description: >-
+      Check whether a work's SHA-256 fingerprint has an OpenTimestamps proof anchored in Bitcoin. The proof is created at attestation time and matures (pending → Bitcoin-confirmed) within a few hours.
+    input_properties: [sha256]
+    required: [sha256]
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/ots
+  - name: verify_attestation
+    description: >-
+      Verify the server HMAC signature of an attestation issued by the Spazio Genesi service. Confirms that the attestation string (fingerprint + timestamp) and any declared metadata are authentic and untampered. Note: this checks the SIGNATURE only. Whether a given file matches the fingerprint must be checked locally by re-hashing the file. If the certificate carried declared metadata (title/author/year/notes), they must be provided EXACTLY as printed for the signature to verify.
+    input_properties: [sha256, attestazione, hmac, titolo, autore, anno, note]
+    required: [sha256, attestazione, hmac]
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/verify
+  - name: lookup_certificate
+    description: >-
+      Look up whether a work's SHA-256 fingerprint has an attestation certificate in the public archive, and get its permanent links (public certificate page, PDF download, OpenTimestamps proof, browser verification). Trust model: this information is reachable only by whoever knows the fingerprint.
+    input_properties: [sha256]
+    required: [sha256]
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/cert
+  - name: authorize
+    description: >-
+      Start the device-flow authorization to attest works in this session (up to 20 attestations, 24h). Returns a link the USER must open in a browser and approve (anti-bot check included). After the user approves, call `complete_authorization`. Not needed if the connection already carries an API key header, or for verification tools.
+    input_properties: []
+    required: []
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/agent/authorize
+  - name: complete_authorization
+    description: >-
+      Complete the device-flow authorization after the user approved in the browser. Polls the service briefly; if approval hasn't happened yet, just call this tool again.
+    input_properties: []
+    required: []
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#GET /api/agent/token
+  - name: attest_hash
+    description: >-
+      Attest a work: the service binds the SHA-256 fingerprint to a server-side timestamp and signs it (HMAC). Requires a credential (device flow via `authorize`, or an API key header). Optional declared metadata (title/author/year/notes) are normalized and BOUND by the signature — immutable after issuance, but they remain self-declared (they don't prove authorship). Compute the SHA-256 locally if you have code execution (`sha256sum <file>` / `shasum -a 256 <file>` / `certutil -hashfile <file> SHA256`). NEVER send file bytes or base64 through tool arguments: this server never receives files. If you cannot compute a hash locally, point the user to the website (https://attestazione.spaziogenesi.org, full privacy: hashing happens in the browser) or the Telegram bot @SGAttestBot.
+    input_properties: [sha256, name, size, type, titolo, autore, anno, note]
+    required: [sha256]
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/hash
+  - name: create_certificate_pdf
+    description: >-
+      Generate and archive the certificate PDF for a fingerprint attested in this session with `attest_hash`. The PDF is cryptographically signed, anchored in Bitcoin (OpenTimestamps) and archived server-side; this tool returns the permanent links (the PDF itself is downloadable from its URL — it is never inlined here).
+    input_properties: [sha256]
+    required: [sha256]
+    source_operation: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json#POST /api/cert-pdf
+tool_count: 8

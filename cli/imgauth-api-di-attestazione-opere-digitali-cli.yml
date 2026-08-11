@@ -1,0 +1,65 @@
+generated: '2026-08-11'
+method: searched
+source: https://attestazione.spaziogenesi.org/en/developer/cli/
+docs: https://attestazione.spaziogenesi.org/en/developer/
+name: sg-attest
+vendor: Spazio Genesi ETS
+license: MIT
+install:
+  - method: npx
+    command: npx -y -p @spazio-genesi/attest-mcp sg-attest
+    note: primary channel; no global install required
+  - method: npm
+    command: npm install -g @spazio-genesi/attest-mcp
+  - method: binary
+    command: download from GitHub Releases
+    url: https://attestazione.spaziogenesi.org/en/developer/cli/
+    platforms: [linux-x64, linux-arm64, macos-x64, macos-arm64, windows-x64, windows-arm64]
+    note: no Node.js, no npm and no registry access needed
+authentication:
+  env: IMGAUTH_API_KEY
+  note: >-
+    the key is read from the environment and never passed as an argument, so it does not land in shell
+    history or CI logs. `sg-attest authorize` runs the browser device flow instead when no key is set.
+commands:
+  - name: status
+    summary: report the health of the four service components
+    rest: 'GET /api/status'
+  - name: authorize
+    summary: start the device flow and print the URL the human must approve
+    rest: 'POST /api/agent/authorize'
+  - name: attest
+    summary: hash a file locally and attest the fingerprint
+    rest: 'POST /api/hash'
+    flags: ['--pdf <file>', '--json']
+    example: sg-attest attest opera.zip --pdf certificato.pdf
+  - name: verify
+    summary: re-hash a file locally and verify it against a declared fingerprint and the server HMAC
+    rest: 'POST /api/verify'
+    flags: ['--hash <sha256>', '--json']
+    example: sg-attest verify ./opera.zip --hash <sha256>
+  - name: verify-cert
+    summary: verify an issued certificate
+  - name: cert
+    summary: retrieve the archived certificate PDF for a fingerprint
+    rest: 'GET /api/cert'
+  - name: anchor
+    summary: check the OpenTimestamps/Bitcoin anchor for a fingerprint
+    rest: 'GET /api/ots'
+flags:
+  - {flag: '--json', description: 'machine-readable output for scripting'}
+  - {flag: '--pdf <file>', description: 'also generate, archive and save the signed certificate'}
+exit_codes:
+  - {code: 0, meaning: success}
+  - {code: 1, meaning: error}
+  - {code: 2, meaning: verification failed}
+ci:
+  github_action: SPAZIO-GENESI/attest-action@v1
+  example: |
+    - uses: SPAZIO-GENESI/attest-action@v1
+      with:
+        files: dist/release.zip
+        api-key: ${{ secrets.SG_API_KEY }}
+note: >-
+  The CLI is the only client that can attest a file of unbounded size: the browser path is capped by the
+  browser at roughly 1 GB, and the legacy server-side path at 100 MB. Hashing is local in every case.

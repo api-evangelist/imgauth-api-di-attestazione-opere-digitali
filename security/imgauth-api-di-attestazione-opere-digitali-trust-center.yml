@@ -1,0 +1,61 @@
+generated: '2026-08-11'
+method: searched
+probe: true
+source: https://trust.spaziogenesi.org/
+url: https://trust.spaziogenesi.org/
+certified: false
+certifications: []
+correction: >-
+  The automated probe originally recorded SOC 2, ISO 27001 and GDPR here from keyword presence. Two of
+  those were WRONG and have been removed after reading the page. "SOC 2" and "certificazione ISO 27001"
+  appear on this page only inside a list of options the organisation EXAMINED AND DELIBERATELY REJECTED —
+  SOC 2 as irrelevant to an Italian public-interest audience, ISO 27001 certification as an unsustainable
+  audit cost for an ETS of this scale. The page states the Annex A controls are adopted "per ispirazione,
+  non per certificazione formale". Recording them as held certifications would have credited this
+  provider with a posture it explicitly disclaims.
+standards_applied_without_certification:
+  - {id: 'ISO/IEC 27001', basis: 'Annex A controls relevant to the organisation''s scale, applied for inspiration; no certification'}
+  - {id: 'ISO/IEC 27037', basis: partial — digital evidence acquisition and preservation}
+  - {id: 'ISO/IEC 27042', basis: partial — evidence analysis}
+  - {id: 'ISO/IEC 27043', basis: partial — incident investigation}
+  - {id: 'CAD + AgID guidelines', basis: digital document formation, PAdES B-LT with RFC 3161}
+  - {id: 'eIDAS 2.0', basis: 'explicitly NON-QUALIFIED positioning; qualified seal on the public roadmap, funding-dependent'}
+standards_examined_and_rejected:
+  - {id: 'SOC 2', reason: 'US B2B enterprise standard, stated as having no relevance to the Italian public-interest audience'}
+  - {id: 'ISO 27001 certification', reason: 'audit cost disproportionate for an ETS of this scale'}
+compliance_program:
+  published: true
+  name: Genesis Trust Framework (GTF)
+  components:
+    - Compliance Map — each standard with its applied/inspiration/rejected status
+    - Architecture Decision Records published in the repository
+    - Open Trust Score, computed from published formulas
+    - public risk register and annual review calendar
+    - technical whitepaper (CC BY 4.0)
+  note: >-
+    An open, self-published, auditable compliance program offered explicitly IN PLACE OF third-party
+    certification. It is genuine and unusually transparent for an organisation this size — but it is
+    self-attested, and any consumer should read it as such.
+gdpr:
+  implemented: true
+  evidence:
+    - data minimisation by design — file bytes never transit
+    - EU data residency (Cloudflare R2)
+    - cookieless Matomo analytics, no persistent identifiers
+    - published privacy notice and an admin "forget" flow that anonymises listings
+governance:
+  external_reviewer: Radixia srl (independent)
+  review_cadence: annual, published in the registry
+  human_cost_budget: 8 hours/month across all recurring processes
+subprocessors:
+  - {name: Cloudflare, role: DNS, Workers, R2 storage, DDoS, Zero Trust Access}
+  - {name: GitHub, role: source, CI/CD, Pages}
+  - {name: Stripe, role: 'payments — hosted Checkout and Customer Portal, no card data on the Worker'}
+  - {name: Azure, role: digital signing service}
+  - {name: Telegram, role: optional attestation channel, user consent required}
+  - {name: OpenTimestamps calendar operators, role: Bitcoin anchor redundancy across 4 providers}
+data_residency: EU
+evidence:
+  - source: https://trust.spaziogenesi.org/
+    http_status: 200
+    checked: '2026-08-11'

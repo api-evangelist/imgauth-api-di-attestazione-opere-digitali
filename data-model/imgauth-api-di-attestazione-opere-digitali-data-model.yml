@@ -1,0 +1,92 @@
+generated: '2026-08-11'
+method: derived
+source: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+note: >-
+  Derived from the inline response schemas — the contract declares only ONE named component
+  (components.schemas.Errore); every other shape is inlined at the operation, so there are no $ref links
+  to walk and no reusable schema graph. The entities below were reconstructed from response property sets
+  and the documented flows. The domain has no surrogate ids: the SHA-256 fingerprint IS the primary key
+  for everything, which is why the whole archive is reachable only by someone who already knows the hash.
+primary_key:
+  field: sha256
+  format: 64 hexadecimal characters
+  note: content-addressed — computed on the client, never assigned by the server
+entities:
+  - name: Attestazione
+    description: the signed binding of a fingerprint to a server-side timestamp
+    source: 'response of POST /api/hash'
+    fields:
+      - {name: sha256, type: string, role: primary_key}
+      - {name: attestazione, type: string, note: 'the canonical string "SHA-256:<hash>@<ISO timestamp>Z"'}
+      - {name: hmac, type: string, nullable: true, note: 'base64, 44 chars, server signature over the attestation and bound metadata'}
+      - {name: timestamp_iso, type: string, format: date-time}
+      - {name: timestamp_leggibile, type: string}
+      - {name: emesso_da, type: string}
+      - {name: dimensione_bytes, type: integer, nullable: true}
+      - {name: tipo_mime, type: string}
+      - {name: titolo, type: string, note: declared metadata, bound by the signature}
+      - {name: autore, type: string, note: declared metadata, bound by the signature}
+      - {name: anno, type: string, note: declared metadata, bound by the signature}
+      - {name: note, type: string, note: declared metadata, bound by the signature}
+      - {name: fascia, type: string, enum: [base, sviluppatore, convenzione]}
+      - {name: fascia_motivo, type: string, nullable: true, enum: [pool_esaurito, tetto_individuale]}
+      - {name: convenzione, type: object, nullable: true, fields: [id, name]}
+  - name: Certificato
+    description: the signed, archived PDF and its permanent public surfaces
+    source: 'POST /api/cert-pdf, GET /api/cert, GET /c/{hash}'
+    fields:
+      - {name: sha256, type: string, role: foreign_key}
+    note: >-
+      binary PDF, PAdES B-LT signed with an RFC 3161 timestamp; stored in Cloudflare R2. Multiple
+      issuances for one fingerprint are permitted and GET /api/cert resolves the OLDEST.
+  - name: AncoraggioOTS
+    description: the OpenTimestamps proof anchoring the fingerprint in Bitcoin
+    source: 'GET /api/ots'
+    note: binary .ots file; matures from pending to Bitcoin-confirmed within hours across 4 calendars
+  - name: StatoServizio
+    description: live health of the four components
+    source: 'GET /api/status'
+    fields:
+      - {name: worker, type: string, enum: [ok, degraded, down, 'n/d']}
+      - {name: archive, type: string}
+      - {name: signer, type: string}
+      - {name: anchor, type: string}
+      - {name: checked_at, type: string, format: date-time}
+  - name: StoricoStato
+    description: 90-day daily rollup, banded into 48 half-hour slots per day
+    source: 'GET /api/status-history'
+    fields:
+      - {name: updated, type: string}
+      - {name: window_days, type: integer}
+      - {name: overall, type: object}
+      - {name: components, type: object}
+  - name: Integrazione
+    description: an approved partner listing in the public showcase
+    source: 'GET /api/integrations'
+    fields:
+      - {name: id, type: string, role: primary_key}
+      - {name: logo_url, type: string}
+    note: only listings with status 'approved' are exposed
+  - name: RichiestaAutorizzazione
+    description: a short-lived device-flow authorization request
+    source: 'POST /api/agent/authorize, GET /api/agent/token'
+    fields:
+      - {name: code, type: string, role: primary_key}
+      - {name: verification_url, type: string}
+      - {name: expires_in, type: integer}
+      - {name: interval, type: integer}
+      - {name: status, type: string, note: "becomes 'claimed' after the token is read once"}
+      - {name: token, type: string, note: 'session token, prefix sg_s_, delivered exactly once'}
+relationships:
+  - {from: Certificato, to: Attestazione, type: belongs_to, via: sha256}
+  - {from: AncoraggioOTS, to: Attestazione, type: belongs_to, via: sha256}
+  - {from: Attestazione, to: Certificato, type: has_many, via: sha256, note: 'multiple issuances permitted; oldest wins on retrieval'}
+  - {from: Attestazione, to: Convenzione, type: belongs_to, via: convenzione.id, note: present only when fascia is 'convenzione'}
+  - {from: Integrazione, to: Logo, type: has_one, via: id}
+  - {from: RichiestaAutorizzazione, to: SessionToken, type: has_one, via: code}
+gaps:
+  - >-
+    Only one named schema in components. Every payload is inlined, so nothing is reusable and no client
+    generator can emit shared models — the single largest contract-quality gap in this spec.
+  - No operationId on any of the 18 operations, so no operation can be referenced by a stable name.
+  - No tags declared, so the contract cannot be grouped by resource in any documentation renderer.

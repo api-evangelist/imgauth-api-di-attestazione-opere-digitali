@@ -1,0 +1,70 @@
+generated: '2026-08-11'
+method: searched
+source: live probes of every apis.yml baseURL host, the docs host and the org root
+note: >-
+  A real RFC 9116 security.txt is served on BOTH imgauth.spaziogenesi.org (the API host) and
+  attestazione.spaziogenesi.org (the docs/app host), and it carries a working Policy: link. Every other
+  well-known path 404s on every host. The Worker returns a JSON 404 body; the docs host returns HTML 404 —
+  neither is a soft-200, so these are true absences. No OAuth/OIDC discovery documents exist because the
+  API authenticates with bearer API keys and a bespoke device flow, not OAuth 2.0.
+hosts:
+  - https://imgauth.spaziogenesi.org
+  - https://attest-mcp-remote.it-e3f.workers.dev
+  - https://attestazione.spaziogenesi.org
+  - https://spaziogenesi.org
+documents:
+  - path: /.well-known/security.txt
+    host: imgauth.spaziogenesi.org
+    status: 200
+    content_type: text/plain
+    file: imgauth-api-di-attestazione-opere-digitali-security.txt
+  - path: /.well-known/security.txt
+    host: attestazione.spaziogenesi.org
+    status: 200
+    content_type: text/plain
+    note: same document, canonical points at the imgauth host
+  - path: /.well-known/security.txt
+    host: attest-mcp-remote.it-e3f.workers.dev
+    status: 404
+  - path: /.well-known/security.txt
+    host: spaziogenesi.org
+    status: 404
+  - path: /.well-known/openid-configuration
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    host: attest-mcp-remote.it-e3f.workers.dev
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    host: attest-mcp-remote.it-e3f.workers.dev
+    status: 404
+  - path: /.well-known/api-catalog
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/agent-card.json
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/agent.json
+    host: imgauth.spaziogenesi.org
+    status: 404
+  - path: /.well-known/agent-card.json
+    host: attest-mcp-remote.it-e3f.workers.dev
+    status: 404
+  - path: /.well-known/agent.json
+    host: attest-mcp-remote.it-e3f.workers.dev
+    status: 404
+  - path: /.well-known/agent-card.json
+    host: attestazione.spaziogenesi.org
+    status: 404
+  - path: /.well-known/agent.json
+    host: attestazione.spaziogenesi.org
+    status: 404

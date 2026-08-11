@@ -1,0 +1,43 @@
+generated: '2026-08-11'
+method: searched
+source: https://attestazione.spaziogenesi.org/changelog/
+versioning:
+  scheme: semver-in-info-version
+  current: 1.34.1
+  note: >-
+    The engine version is published in the OpenAPI info.version and echoed by GET /ping. It is NOT in the
+    URL path and NOT negotiated by header — there is one unversioned live contract at
+    https://imgauth.spaziogenesi.org, so a version bump is visible only after the fact via the changelog.
+  docs: https://attestazione.spaziogenesi.org/changelog/
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No published deprecation policy and no RFC 8594 Sunset/Deprecation header support. Nothing in the
+    contract is marked deprecated. The one breaking change to date (1.15, 2026-07-01, hashing moved to the
+    client) was announced in the changelog only. This is a real gap for a service whose value proposition
+    is long-horizon proof of existence.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No numeric uptime commitment is published. What IS published, per tier, is certificate RETENTION —
+    the durability guarantee that matters for an attestation service.
+  retention:
+    base: at least 6 months
+    developer: at least 12 months
+    professional: at least 5 years
+    convention: at least 5 years
+    proof_of_existence: >-
+      never expires — the Bitcoin/OpenTimestamps anchor and the RFC 3161 mark remain verifiable
+      independently of the service
+status_page: https://attestazione.spaziogenesi.org/status/
+status_api:
+  current: https://imgauth.spaziogenesi.org/api/status
+  history: https://imgauth.spaziogenesi.org/api/status-history
+  health_log: https://imgauth.spaziogenesi.org/api/health-log
+  note: >-
+    Unusually strong for a provider this size: the status page is backed by three PUBLIC, CORS-open,
+    machine-readable endpoints — live component state (worker/archive/signer/anchor), a 90-day daily
+    rollup with 30-minute banding, and a per-day fine-grained health-event log.
+deprecated_operations: []

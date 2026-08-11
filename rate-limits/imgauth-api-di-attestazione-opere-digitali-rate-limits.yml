@@ -1,0 +1,81 @@
+generated: '2026-08-11'
+method: searched
+source: https://imgauth.spaziogenesi.org/openapi.json
+docs: https://attestazione.spaziogenesi.org/en/developer/
+note: >-
+  Two independent ceilings apply and they are documented in different places. (1) A per-IP request rate
+  limit, stated inline in the OpenAPI 429 response descriptions for each operation. (2) A per-credential
+  monthly attestation QUOTA attached to the pricing tier, documented on the developer and terms pages.
+  A credential raises the quota; it does NOT raise the per-IP rate limit — the contract says so explicitly.
+headers:
+  observed: []
+  documented: []
+  retry_after: false
+  probe:
+    url: https://imgauth.spaziogenesi.org/api/status
+    http_status: 200
+    checked: '2026-08-11'
+    result: >-
+      No RateLimit-*, X-RateLimit-* or Retry-After header on a live 200. The response carries only cache,
+      CORS and security headers. An agent therefore cannot see how close it is to the ceiling and has no
+      published backoff hint — it can only react to a 429 after the fact. This is the single clearest
+      runtime-semantics gap in an otherwise well-documented API.
+limit_count: 3
+limits:
+  - scope: per-ip
+    applies_to:
+      - 'POST /api/hash'
+      - 'POST /api/verify'
+      - 'GET /api/ots'
+      - 'GET /api/cert'
+      - 'GET /api/integrations'
+      - 'POST /api/agent/authorize'
+      - 'POST /api/agent/approve'
+      - 'GET /api/agent/token'
+    limit: 60
+    window: 60s
+    status_on_exhaustion: 429
+    source: OpenAPI 429 response descriptions
+  - scope: per-ip
+    applies_to:
+      - 'POST /api/cert-pdf'
+    limit: 10
+    window: 60s
+    status_on_exhaustion: 429
+    note: lowest in the API — the PDF signing path is the most expensive operation
+    source: OpenAPI 429 response description
+  - scope: per-credential
+    applies_to:
+      - 'POST /api/hash'
+    limit: 100
+    window: request
+    unit: MB
+    note: >-
+      legacy inline-base64 path only; exceeding it returns 413. The client-side-hash path has no
+      server-side size ceiling (the browser imposes ~1 GB, the CLI none).
+    status_on_exhaustion: 413
+quotas:
+  - tier: base
+    limit: anti-abuse only
+    window: rolling
+    note: anonymous, Turnstile-gated; 5/day on the Telegram channel
+  - tier: sviluppatore
+    limit: 50
+    unit: attestations
+    window: month
+  - tier: professionale
+    limit: 200
+    unit: attestations
+    window: month
+  - tier: convenzione
+    limit: negotiated pool
+    window: month
+  - tier: device-flow session
+    limit: 20
+    unit: attestations
+    window: 24h
+    status_on_exhaustion: 429
+verification_is_free: >-
+  Verification operations (POST /api/verify, GET /api/ots, GET /api/cert, GET /c/<hash>, the badges) carry
+  no quota at any tier — only the per-IP rate limit. The provider states verification is always free and
+  unlimited for anyone.

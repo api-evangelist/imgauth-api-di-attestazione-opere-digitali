@@ -1,0 +1,27 @@
+generated: '2026-08-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: imgauth.spaziogenesi.org
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 24 18:54:24 2026 GMT
+  hsts: null
+- host: attest-mcp-remote.it-e3f.workers.dev
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 21 17:14:02 2026 GMT
+  hsts: false
+domains:
+- domain: spaziogenesi.org
+  dnssec: true
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: workers.dev
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

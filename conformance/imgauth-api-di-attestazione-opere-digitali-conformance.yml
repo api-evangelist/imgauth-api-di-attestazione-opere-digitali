@@ -1,0 +1,79 @@
+generated: '2026-08-11'
+method: searched
+source: https://trust.spaziogenesi.org/
+docs: https://attestazione.spaziogenesi.org/sicurezza/
+note: >-
+  Spazio Genesi ETS publishes an unusually explicit Compliance Map that states which standards it applies
+  and — importantly — which it has deliberately DECLINED. Nothing below is inferred from keyword presence:
+  where the provider says "inspiration, not certification", conforms is false and the note says so.
+standards:
+  - id: rfc3161-timestamp
+    conforms: true
+    evidence: >-
+      RFC 3161 trusted timestamp applied to every certificate via an Adobe AATL-recognised TSA; stated on
+      the trust centre and in the OpenAPI description
+  - id: opentimestamps-bitcoin-anchor
+    conforms: true
+    evidence: 'GET /api/ots returns the .ots proof; 4-calendar redundancy per trust centre'
+  - id: pades-b-lt
+    conforms: true
+    evidence: certificates are PAdES B-LT signed PDFs (trust centre, Compliance Map)
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: 'live 200 at /.well-known/security.txt on the API and docs hosts, with Policy and Expires'
+  - id: openapi-3.0
+    conforms: true
+    evidence: 'OpenAPI 3.0.3 served at https://imgauth.spaziogenesi.org/openapi.json'
+  - id: mcp-2025-06-18
+    conforms: true
+    evidence: >-
+      hosted Streamable HTTP MCP server negotiated protocolVersion 2025-06-18 on a live initialize call
+  - id: gdpr
+    conforms: true
+    evidence: >-
+      published privacy notice, data-minimisation-by-design (file bytes never leave the client),
+      cookieless Matomo analytics, EU data residency on Cloudflare R2, admin "forget" flow
+  - id: eidas-2.0
+    conforms: partial
+    evidence: >-
+      the service positions itself EXPLICITLY as a NON-QUALIFIED attestation (advanced electronic
+      signature with a self-signed certificate plus RFC 3161 and Bitcoin anchoring). Upgrade to a
+      qualified seal is on the public roadmap, conditioned on funding. Control CTL-eidas-honest-positioning.
+  - id: iso-iec-27001
+    conforms: false
+    evidence: >-
+      NOT certified. Annex A controls relevant to the organisation's scale are adopted "per ispirazione,
+      non per certificazione formale"; formal certification was examined and rejected as an
+      unsustainable audit cost for an ETS of this size.
+  - id: iso-iec-27037-27042-27043
+    conforms: partial
+    evidence: partial application for digital-evidence acquisition, analysis and investigation (Compliance Map)
+  - id: cad-agid-guidelines
+    conforms: partial
+    evidence: Italian CAD + AgID digital-document formation guidelines applied to certificate generation
+  - id: soc2
+    conforms: false
+    evidence: >-
+      explicitly examined and DISCARDED as irrelevant to an Italian public-interest audience; the
+      open Trust Score of the Genesis Trust Framework is offered as the equivalent, more verifiable answer
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      no OAuth 2.0 on the API contract — bearer API keys (sg_k_*), a stateless signed voucher header and a
+      bespoke device flow. Social OAuth (Google/Microsoft/LinkedIn) is used only for human key issuance.
+  - id: openid-connect
+    conforms: false
+    evidence: '/.well-known/openid-configuration returns 404 on every host'
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      errors use a bespoke { "error": "<string>" } envelope (components.schemas.Errore), not
+      application/problem+json
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: no Sunset or Deprecation header and no deprecated operation anywhere in the contract
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      the API has no event, streaming or webhook surface at all — zero callbacks and zero webhooks in the
+      contract — so there is nothing for AsyncAPI to describe. An honest N/A, not a gap.

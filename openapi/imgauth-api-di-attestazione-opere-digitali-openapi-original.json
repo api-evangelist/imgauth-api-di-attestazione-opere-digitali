@@ -1,0 +1,1034 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "imgauth — API di attestazione opere digitali",
+    "version": "1.34.1",
+    "description": "Motore di attestazione Spazio Genesi ETS. Full privacy: l'impronta SHA-256 si calcola sul client, il file non viene mai inviato al server. Contratto reale in italiano (non tradurre i nomi campo). Vedi https://attestazione.spaziogenesi.org per l'interfaccia utente e https://github.com/SPAZIO-GENESI/imgauth per il codice sorgente (AGPL-3.0).",
+    "contact": {
+      "name": "Spazio Genesi ETS",
+      "url": "https://spaziogenesi.org"
+    },
+    "license": {
+      "name": "AGPL-3.0-only",
+      "url": "https://github.com/SPAZIO-GENESI/imgauth/blob/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://imgauth.spaziogenesi.org",
+      "description": "produzione"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "agentBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "sg_k_<id>_<secret> oppure sg_s_<id>_<secret>",
+        "description": "Credenziale agente (P21): API key per convenzioni o session token da device flow. Sblocca SOLO il bypass della challenge Turnstile su POST /api/hash — HMAC, timestamp server e rate limit per-IP restano invariati. Facoltativa: senza header, il percorso Turnstile è identico a prima."
+      },
+      "voucherHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-SG-Voucher",
+        "description": "Voucher firmato stateless (P25 §2.7): ottenuto SOLO tramite il flusso OAuth \"Attesta con la tua email\" sul sito — non c'è un endpoint pubblico in questo contratto che lo emette. TTL 8h. Bypassa il solo Turnstile su /api/hash e /api/cert-pdf, applica pool/tetto di un'eventuale convenzione o la fascia Professionale — stesso principio del bearer agente."
+      }
+    },
+    "schemas": {
+      "Errore": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/ping": {
+      "get": {
+        "summary": "Health check",
+        "description": "Verifica che il Worker risponda e restituisce la versione del motore.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "version": {
+                      "type": "string",
+                      "example": "1.18.0"
+                    },
+                    "origin": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hash": {
+      "post": {
+        "summary": "Attesta un'impronta SHA-256",
+        "description": "Percorso primario (dalla 1.15.0): riceve l'impronta calcolata sul client (full privacy). Percorso legacy: file inline base64 in `image` (hash calcolato dal server, tetto 100 MB). Se assente una credenziale agente valida (vedi agentBearer), è richiesto `turnstile_token` quando TURNSTILE_SECRET è configurato.",
+        "security": [
+          {
+            "agentBearer": []
+          },
+          {
+            "voucherHeader": []
+          },
+          {}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$",
+                    "description": "Impronta calcolata sul client (percorso primario)"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "File inline base64 (percorso legacy, tetto 100 MB)"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "MIME dichiarato"
+                  },
+                  "size": {
+                    "type": "integer",
+                    "description": "Dimensione dichiarata in byte (solo percorso client)"
+                  },
+                  "titolo": {
+                    "type": "string",
+                    "maxLength": 150
+                  },
+                  "autore": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "anno": {
+                    "type": "string",
+                    "maxLength": 50
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 300
+                  },
+                  "turnstile_token": {
+                    "type": "string",
+                    "description": "Richiesto se non c'è credenziale agente e TURNSTILE_SECRET è configurato"
+                  },
+                  "lang": {
+                    "type": "string",
+                    "enum": [
+                      "it",
+                      "en"
+                    ],
+                    "description": "Lingua dei messaggi d'errore (P41). Facoltativo, default 'it'; in mancanza si legge Accept-Language. Non influisce sul contenuto attestato né sulla firma HMAC."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attestazione emessa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sha256": {
+                      "type": "string"
+                    },
+                    "dimensione_bytes": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "tipo_mime": {
+                      "type": "string"
+                    },
+                    "titolo": {
+                      "type": "string"
+                    },
+                    "autore": {
+                      "type": "string"
+                    },
+                    "anno": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "timestamp_iso": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "timestamp_leggibile": {
+                      "type": "string"
+                    },
+                    "attestazione": {
+                      "type": "string"
+                    },
+                    "emesso_da": {
+                      "type": "string"
+                    },
+                    "hmac": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "fascia": {
+                      "type": "string",
+                      "enum": [
+                        "base",
+                        "sviluppatore",
+                        "convenzione"
+                      ],
+                      "description": "Fascia effettiva dell'emissione (P25)"
+                    },
+                    "fascia_motivo": {
+                      "type": "string",
+                      "nullable": true,
+                      "enum": [
+                        null,
+                        "pool_esaurito",
+                        "tetto_individuale"
+                      ],
+                      "description": "Presente solo se una convenzione è stata degradata a 'base'"
+                    },
+                    "convenzione": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "description": "Presente solo se fascia è 'convenzione'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Campo mancante o malformato",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errore"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Credenziale agente invalida, o verifica anti-bot non superata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errore"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File troppo grande (solo percorso legacy, max 100 MB)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errore"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Quota credenziale esaurita, o rate limit per-IP (60/60s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errore"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/verify": {
+      "post": {
+        "summary": "Verifica hash dichiarato vs file, e firma HMAC",
+        "description": "`image` (l'opera originale, non il PDF) è FACOLTATIVO dalla 1.15.0: senza, verifica solo la firma HMAC (il confronto hash/file è fatto dal client in locale).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hash": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "attestazione": {
+                    "type": "string"
+                  },
+                  "hmac": {
+                    "type": "string"
+                  },
+                  "titolo": {
+                    "type": "string"
+                  },
+                  "autore": {
+                    "type": "string"
+                  },
+                  "anno": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "hash"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Esito verifica",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hash_dichiarato": {
+                      "type": "string"
+                    },
+                    "hash_calcolato": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "coincide": {
+                      "type": "boolean",
+                      "nullable": true
+                    },
+                    "hmac_valido": {
+                      "type": "boolean",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          }
+        }
+      }
+    },
+    "/api/cert-pdf": {
+      "post": {
+        "summary": "Genera il certificato PDF firmato",
+        "description": "Riceve l'oggetto restituito da POST /api/hash (deve includere `attestazione` + `hmac`, verificati server-side prima di firmare). Chiama authart server-to-server per la firma crittografica; archivia copia in R2. Campo facoltativo `lang` (it|en, P41): sceglie la lingua dei messaggi d'errore e della prosa disegnata a runtime nel PDF (stringa di attestazione, dati dichiarati, dettagli tecnici, data leggibile). Le etichette del template AcroForm (TITOLO, DIMENSIONE, MIME, SHA-256…) restano italiane. Non influisce sul contenuto attestato né sulla firma HMAC: lo stesso token è valido in entrambe le lingue.",
+        "security": [
+          {
+            "agentBearer": []
+          },
+          {
+            "voucherHeader": []
+          },
+          {}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Oggetto completo restituito da POST /api/hash"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PDF firmato",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "attestazione incoerente con sha256/timestamp_iso"
+          },
+          "403": {
+            "description": "HMAC non valido"
+          },
+          "429": {
+            "description": "Rate limit per-IP (10/60s, il più basso dell'API: endpoint costoso)"
+          },
+          "503": {
+            "description": "HMAC_SECRET non configurato (fail-closed), oppure firma temporaneamente non disponibile (es. deploy del firmatario in corso) — messaggio generico, riprovare tra qualche minuto"
+          }
+        }
+      }
+    },
+    "/api/ots": {
+      "get": {
+        "summary": "Prova OpenTimestamps (ancoraggio Bitcoin)",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File .ots",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "hash malformato"
+          },
+          "404": {
+            "description": "prova assente"
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          }
+        }
+      }
+    },
+    "/api/cert": {
+      "get": {
+        "summary": "Recupero certificato smarrito",
+        "description": "Restituisce dal R2 il PDF archiviato per quell'impronta (la più antica, se più emissioni). Stesso modello di fiducia del QR: recuperabile solo da chi conosce l'hash.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PDF archiviato",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "hash malformato"
+          },
+          "404": {
+            "description": "certificato assente"
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          },
+          "503": {
+            "description": "archivio non configurato"
+          }
+        }
+      }
+    },
+    "/api/badge": {
+      "get": {
+        "summary": "Badge SVG \"Opera attestata\"",
+        "description": "Embeddabile via <img>. Verde solo se l'hash è realmente in archivio; mai errore HTTP (per non rompere l'immagine).",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SVG (verde 24h cache, grigio 60s cache)",
+            "content": {
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/badge/integration": {
+      "get": {
+        "summary": "Badge SVG \"Funziona con Attestazione Spazio Genesi\"",
+        "description": "Embeddabile via <img> nel sito del partner (P28). Verde solo se la candidatura con quell'id è 'approved' in vetrina; mai errore HTTP (id malformato o non approvata → badge grigio \"integrazione non verificata\").",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^int_[0-9a-f]{8}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SVG (verde 24h cache, grigio 60s cache)",
+            "content": {
+              "image/svg+xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/status": {
+      "get": {
+        "summary": "Stato semaforico dei servizi",
+        "description": "worker/archive/signer/anchor. Cache 180s con stale-while-revalidate. CORS aperto (dato pubblico).",
+        "responses": {
+          "200": {
+            "description": "Stato",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "worker": {
+                      "type": "string",
+                      "enum": [
+                        "ok",
+                        "down"
+                      ]
+                    },
+                    "archive": {
+                      "type": "string"
+                    },
+                    "signer": {
+                      "type": "string"
+                    },
+                    "anchor": {
+                      "type": "string"
+                    },
+                    "checked_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/status-history": {
+      "get": {
+        "summary": "Storico 90 giorni per componente",
+        "description": "Rollup giornaliero per la pagina /status/. Ogni giorno riporta lo stato peggiore ('s') e, per i giorni registrati a fasce di 30 minuti (dal rilascio 1.30.0), il conteggio delle 48 fasce ('b') da cui si ricava la durata reale del disservizio. L'uptime è pesato sul tempo, non binario per-giorno. CORS aperto.",
+        "responses": {
+          "200": {
+            "description": "Storico",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "window_days": {
+                      "type": "integer",
+                      "example": 90
+                    },
+                    "overall": {
+                      "type": "string",
+                      "enum": [
+                        "ok",
+                        "degraded",
+                        "down",
+                        "nodata"
+                      ]
+                    },
+                    "components": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "enum": [
+                              "worker",
+                              "signer",
+                              "archive",
+                              "anchor"
+                            ]
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "current": {
+                            "type": "string",
+                            "enum": [
+                              "ok",
+                              "degraded",
+                              "down",
+                              "nodata"
+                            ]
+                          },
+                          "uptime": {
+                            "type": "number",
+                            "nullable": true,
+                            "description": "Percentuale pesata sul tempo (fasce ok / fasce con dati sull'intera finestra)",
+                            "example": 99.9
+                          },
+                          "days": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "d": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "s": {
+                                  "type": "string",
+                                  "enum": [
+                                    "ok",
+                                    "degraded",
+                                    "down",
+                                    "nodata"
+                                  ],
+                                  "description": "Stato peggiore del giorno"
+                                },
+                                "b": {
+                                  "type": "object",
+                                  "description": "Conteggio delle fasce da 30 minuti. Assente sui giorni registrati prima del rilascio 1.30.0 e sui giorni senza dati: in quel caso la barra resta piena, derivata da 's'.",
+                                  "properties": {
+                                    "ok": {
+                                      "type": "integer"
+                                    },
+                                    "degraded": {
+                                      "type": "integer"
+                                    },
+                                    "down": {
+                                      "type": "integer"
+                                    },
+                                    "n": {
+                                      "type": "integer",
+                                      "description": "Fasce con dati (ok+degraded+down), max 48"
+                                    }
+                                  }
+                                }
+                              },
+                              "required": [
+                                "d",
+                                "s"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health-log": {
+      "get": {
+        "summary": "Eventi fini di salute per un giorno",
+        "description": "Errori, degradi, rallentamenti sotto soglia. CORS aperto.",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "default: oggi UTC"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Eventi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/integrations": {
+      "get": {
+        "summary": "Elenco pubblico delle integrazioni approvate",
+        "description": "Sole candidature con status 'approved'. Sorgente machine-readable per la vetrina statica su attestazione.spaziogenesi.org/integrazioni/ (P29). Cache 60s, CORS aperto.",
+        "responses": {
+          "200": {
+            "description": "Elenco",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "app_name": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "logo_url": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          }
+        }
+      }
+    },
+    "/integrazioni/logo/{id}": {
+      "get": {
+        "summary": "Logo di un'integrazione approvata",
+        "description": "Serve il logo caricato dal partner (P28), SOLO per candidature con status 'approved' — 404 altrimenti. URL riportato in logo_url da GET /api/integrations.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^int_[0-9a-f]{8}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Immagine (PNG/JPEG/WebP)",
+            "content": {
+              "image/png": {},
+              "image/jpeg": {},
+              "image/webp": {}
+            }
+          },
+          "404": {
+            "description": "Non trovato (id inesistente, non approvato, o servizio non disponibile)"
+          }
+        }
+      }
+    },
+    "/c/{hash}": {
+      "get": {
+        "summary": "Pagina pubblica \"certificato verificabile online\"",
+        "description": "HTML server-rendered: impronta, data, ancoraggio, QR. 404 se l'opera non è in archivio.",
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "it",
+                "en"
+              ]
+            },
+            "description": "Lingua della pagina (P41). Default 'it'."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pagina HTML",
+            "content": {
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "Non in archivio"
+          }
+        }
+      }
+    },
+    "/api/agent/authorize": {
+      "post": {
+        "summary": "Avvia il device flow (P21)",
+        "description": "Nessuna autenticazione richiesta. Crea una richiesta di autorizzazione a breve scadenza.",
+        "responses": {
+          "200": {
+            "description": "Codice generato",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "verification_url": {
+                      "type": "string"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 600
+                    },
+                    "interval": {
+                      "type": "integer",
+                      "example": 3
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          }
+        }
+      }
+    },
+    "/agent/authorize": {
+      "get": {
+        "summary": "Pagina di autorizzazione device flow",
+        "description": "HTML servita dal Worker con widget Turnstile: l'umano autorizza qui l'agente/MCP.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "it",
+                "en"
+              ]
+            },
+            "description": "Lingua della pagina (P41). Default 'it'."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pagina HTML",
+            "content": {
+              "text/html": {}
+            }
+          },
+          "400": {
+            "description": "codice non valido"
+          },
+          "410": {
+            "description": "richiesta scaduta"
+          }
+        }
+      }
+    },
+    "/api/agent/approve": {
+      "post": {
+        "summary": "Approva il device flow, genera il session token",
+        "description": "Chiamata dalla pagina /agent/authorize dopo il completamento della challenge Turnstile.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "turnstile_token": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "code",
+                  "turnstile_token"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Approvato"
+          },
+          "400": {
+            "description": "codice o token mancante"
+          },
+          "403": {
+            "description": "verifica anti-bot non superata"
+          },
+          "409": {
+            "description": "richiesta già gestita"
+          },
+          "410": {
+            "description": "richiesta scaduta"
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          }
+        }
+      }
+    },
+    "/api/agent/token": {
+      "get": {
+        "summary": "Polling del device flow",
+        "description": "Il token è consegnato UNA SOLA VOLTA: dopo la prima lettura, i poll successivi restituiscono status 'claimed'.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stato o token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "approved",
+                        "claimed"
+                      ]
+                    },
+                    "token": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "presente solo su status:approved, una sola volta"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "410": {
+            "description": "richiesta scaduta"
+          },
+          "429": {
+            "description": "Rate limit per-IP (60/60s)"
+          }
+        }
+      }
+    }
+  }
+}

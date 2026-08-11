@@ -1,0 +1,91 @@
+generated: '2026-08-11'
+method: derived
+source: mcp/imgauth-api-di-attestazione-opere-digitali-mcp.yml + openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+note: >-
+  The OpenAPI publishes NO operationId on any of its 18 operations, so every REST binding below is
+  expressed as METHOD + path — the only stable identifier the contract actually carries. Bindings were
+  derived by matching the live MCP tool schemas against the REST request/response shapes; both surfaces
+  were read live, so confidence is high except where noted.
+surfaces:
+  openapi:
+    file: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+    url: https://imgauth.spaziogenesi.org/openapi.json
+    gated: false
+    operations: 18
+    operation_ids_published: false
+  mcp:
+    url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+    gated: false
+    note: tools/list answers anonymously after the initialize handshake
+  graphql: null
+crosswalk:
+  - tool: service_status
+    category: observability
+    rest: ['GET /api/status']
+    binding: rest
+    confidence: high
+  - tool: check_anchor
+    category: verification
+    rest: ['GET /api/ots']
+    binding: rest
+    confidence: high
+    note: REST returns the raw .ots proof file; the tool returns a maturity summary over it
+  - tool: verify_attestation
+    category: verification
+    rest: ['POST /api/verify']
+    binding: rest
+    confidence: high
+    note: >-
+      the tool exposes only the HMAC-signature half of the REST operation — REST also accepts the original
+      file for a server-side hash comparison, which the tool deliberately refuses (files never transit)
+  - tool: lookup_certificate
+    category: verification
+    rest: ['GET /api/cert', 'GET /c/{hash}']
+    binding: rest
+    confidence: medium
+    note: composite — resolves archive presence and returns the permanent certificate-page, PDF and OTS links
+  - tool: authorize
+    category: authorization
+    rest: ['POST /api/agent/authorize']
+    binding: rest
+    confidence: high
+  - tool: complete_authorization
+    category: authorization
+    rest: ['GET /api/agent/token']
+    binding: rest
+    confidence: high
+    note: the tool wraps the poll loop; the token is delivered exactly once, then polls return 'claimed'
+  - tool: attest_hash
+    category: attestation
+    rest: ['POST /api/hash']
+    binding: rest
+    confidence: high
+    note: >-
+      the tool exposes ONLY the client-side-hash path; the legacy base64 inline-file path of the REST
+      operation is intentionally unreachable from MCP
+  - tool: create_certificate_pdf
+    category: attestation
+    rest: ['POST /api/cert-pdf']
+    binding: rest
+    confidence: high
+    note: >-
+      REST requires the caller to pass back the full attestation object (attestazione + hmac); the server
+      holds it in session state for MCP, so the tool takes only the sha256
+mcp_only: []
+rest_only:
+  - operations: ['GET /ping']
+    reason: engine liveness probe, superseded for agents by service_status
+  - operations: ['GET /api/badge', 'GET /api/badge/integration']
+    reason: embeddable SVG badge surfaces, not agent operations
+  - operations: ['GET /api/status-history', 'GET /api/health-log']
+    reason: 90-day status rollup and per-day health events; no MCP tool exposes historical telemetry
+  - operations: ['GET /api/integrations', 'GET /integrazioni/logo/{id}']
+    reason: public partner-showcase directory feed
+  - operations: ['GET /agent/authorize', 'POST /api/agent/approve']
+    reason: browser-side halves of the device flow — the human approves here, an agent cannot
+coverage:
+  tools_named: 8
+  tools_bound: 8
+  mcp_only: 0
+  rest_operations_total: 18
+  rest_operations_with_tool: 9

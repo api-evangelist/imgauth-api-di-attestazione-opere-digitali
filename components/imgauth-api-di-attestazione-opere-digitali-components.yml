@@ -1,0 +1,49 @@
+generated: '2026-08-11'
+method: searched
+source: https://imgauth.spaziogenesi.org/openapi.json
+docs: https://attestazione.spaziogenesi.org/integrazioni/
+note: >-
+  There is no JavaScript element library or web-component package. What the provider does ship is a set of
+  HOSTED, embeddable surfaces addressable by URL — SVG badges designed to be dropped into an <img> tag,
+  and a server-rendered public certificate page. They are grouped below because that is genuinely how a
+  third party embeds this service, but they are hosted endpoints, not client-side components.
+families:
+  - name: Badges
+    kind: hosted-svg
+    loader: none — plain <img src="...">
+    components:
+      - name: Opera attestata badge
+        url: https://imgauth.spaziogenesi.org/api/badge?hash=<sha256>
+        rest: 'GET /api/badge'
+        embed: '<img src="https://imgauth.spaziogenesi.org/api/badge?hash=<sha256>" alt="Opera attestata">'
+        behaviour: >-
+          green only when the fingerprint is genuinely in the archive (cached 24h), grey otherwise
+          (cached 60s). Never returns an HTTP error, so an embedding page can never show a broken image.
+      - name: Integration badge
+        url: https://imgauth.spaziogenesi.org/api/badge/integration?id=<id>
+        rest: 'GET /api/badge/integration'
+        behaviour: >-
+          green only when the partner listing with that id is 'approved' in the public showcase; a
+          malformed or unapproved id degrades to a grey "integration not verified" badge
+  - name: Public certificate page
+    kind: hosted-page
+    components:
+      - name: Verifiable certificate page
+        url: https://imgauth.spaziogenesi.org/c/<sha256>
+        rest: 'GET /c/{hash}'
+        params: [lang]
+        behaviour: >-
+          server-rendered HTML showing the fingerprint, date, anchor status and QR code; 404 when the work
+          is not in the archive. Permanent and linkable — the surface a QR on a printed certificate resolves to.
+  - name: Partner directory
+    kind: data-feed
+    components:
+      - name: Approved integrations feed
+        url: https://imgauth.spaziogenesi.org/api/integrations
+        rest: 'GET /api/integrations'
+        behaviour: >-
+          CORS-open JSON of approved partner listings, cached 60s — the machine-readable source behind the
+          static showcase at attestazione.spaziogenesi.org/integrazioni/
+      - name: Partner logo
+        rest: 'GET /integrazioni/logo/{id}'
+        behaviour: serves the partner logo only while the listing is approved; 404 otherwise

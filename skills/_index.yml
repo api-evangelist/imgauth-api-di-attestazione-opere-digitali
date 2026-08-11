@@ -1,0 +1,27 @@
+generated: '2026-08-11'
+method: generated
+source: >-
+  openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json and the live MCP tools/list
+note: >-
+  The contract publishes no operationId on any of its 18 operations, so every step in these skills is
+  grounded in METHOD + path (verified against the harvested spec) and in the live MCP tool names
+  (verified against tools/list). No identifier below is invented.
+skills:
+  - file: imgauth-api-di-attestazione-opere-digitali-attest-a-work.md
+    name: Attest a digital work and issue its certificate
+    api: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+    operations:
+      - 'POST /api/agent/authorize'
+      - 'GET /api/agent/token'
+      - 'POST /api/hash'
+      - 'POST /api/cert-pdf'
+    tools: [authorize, complete_authorization, attest_hash, create_certificate_pdf]
+  - file: imgauth-api-di-attestazione-opere-digitali-verify-a-work.md
+    name: Verify an attested work and its Bitcoin anchor
+    api: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
+    operations:
+      - 'POST /api/verify'
+      - 'GET /api/cert'
+      - 'GET /api/ots'
+      - 'GET /c/{hash}'
+    tools: [verify_attestation, lookup_certificate, check_anchor]

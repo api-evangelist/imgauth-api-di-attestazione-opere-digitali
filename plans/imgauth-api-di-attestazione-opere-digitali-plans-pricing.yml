@@ -1,0 +1,48 @@
+generated: '2026-08-11'
+method: searched
+source: https://attestazione.spaziogenesi.org/en/condizioni/
+docs: https://attestazione.spaziogenesi.org/professionale/
+currency: EUR
+plan_count: 4
+note: >-
+  A non-profit (ETS) pricing model: the paid tier exists to fund retention and support, not to meter the
+  proof itself. Verification is free and unlimited at every tier, and the proof of existence never expires
+  regardless of what is paid. Payment is processed by Stripe Checkout; no card data touches the Worker.
+plans:
+  - name: Base
+    price: 0
+    currency: EUR
+    period: null
+    quota: anti-abuse limits only (5/day via the Telegram channel)
+    identity: none — zero personal data
+    retention: certificate PDF retrievable for at least 6 months
+    limits: per-IP rate limits; Turnstile anti-bot challenge before issuance
+  - name: Sviluppatore (Developer)
+    price: 0
+    currency: EUR
+    period: null
+    quota: 50 attestations/month
+    identity: verified email via Google, Microsoft or LinkedIn
+    credential: 'self-service API key, prefix sg_k_'
+    retention: certificate PDF retrievable for at least 12 months
+    signup: https://attestazione.spaziogenesi.org/en/developer/keys/
+  - name: Professionale (Professional)
+    price: 20
+    list_price: 24
+    currency: EUR
+    period: year
+    price_note: >-
+      20 EUR/year promotional price until 2026-12-31; 24 EUR/year list price thereafter
+    quota: 200 attestations/month
+    identity: verified email
+    retention: certificate PDF retrievable for at least 5 years
+    url: https://attestazione.spaziogenesi.org/professionale/
+  - name: Convenzione (Convention)
+    price: null
+    currency: EUR
+    period: null
+    quota: negotiated pool with a per-member ceiling
+    identity: email on the organisation's own domain
+    retention: certificate PDF retrievable for at least 5 years
+    contact: it@spaziogenesi.org
+    note: institutional agreements for schools, associations and public bodies
