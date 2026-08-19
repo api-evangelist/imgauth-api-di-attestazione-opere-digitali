@@ -13,7 +13,7 @@ description: >-
 url: https://raw.githubusercontent.com/api-evangelist/imgauth-api-di-attestazione-opere-digitali/refs/heads/main/apis.yml
 created: '2026-07-19'
 modified: '2026-08-11'
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 image: https://attestazione.spaziogenesi.org/og.png
 tags:
   - digital notarization
