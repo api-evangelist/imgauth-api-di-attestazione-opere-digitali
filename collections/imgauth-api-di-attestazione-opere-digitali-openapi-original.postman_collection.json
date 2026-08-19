@@ -1,0 +1,2916 @@
+{
+  "item": [
+    {
+      "id": "80f6dd7b-a860-4a6a-b61f-3dba8e7a6d87",
+      "name": "Health check",
+      "request": {
+        "name": "Health check",
+        "description": {
+          "content": "Verifica che il Worker risponda e restituisce la versione del motore.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "ping"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "292897d1-6847-469d-bd8b-63bce65345ef",
+          "name": "OK",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "ping"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"ok\": true,\n  \"version\": \"1.18.0\",\n  \"origin\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "b741f388-c49a-45af-81a5-341a6f4b3aca",
+      "name": "Attesta un'impronta SHA-256",
+      "request": {
+        "name": "Attesta un'impronta SHA-256",
+        "description": {
+          "content": "Percorso primario (dalla 1.15.0): riceve l'impronta calcolata sul client (full privacy). Percorso legacy: file inline base64 in `image` (hash calcolato dal server, tetto 100 MB). Se assente una credenziale agente valida (vedi agentBearer), è richiesto `turnstile_token` quando TURNSTILE_SECRET è configurato.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "hash"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearerToken}}"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sha256\": \"<string>\",\n  \"image\": \"<byte>\",\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"size\": \"<integer>\",\n  \"titolo\": \"<string>\",\n  \"autore\": \"<string>\",\n  \"anno\": \"<string>\",\n  \"note\": \"<string>\",\n  \"turnstile_token\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "id": "5848230e-3309-45d2-8eeb-34ef59863685",
+          "name": "Attestazione emessa",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sha256\": \"<string>\",\n  \"image\": \"<byte>\",\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"size\": \"<integer>\",\n  \"titolo\": \"<string>\",\n  \"autore\": \"<string>\",\n  \"anno\": \"<string>\",\n  \"note\": \"<string>\",\n  \"turnstile_token\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"sha256\": \"string\",\n  \"dimensione_bytes\": 4197,\n  \"tipo_mime\": \"string\",\n  \"titolo\": \"string\",\n  \"autore\": \"string\",\n  \"anno\": \"string\",\n  \"note\": \"string\",\n  \"timestamp_iso\": \"1956-01-24T20:12:17.133Z\",\n  \"timestamp_leggibile\": \"string\",\n  \"attestazione\": \"string\",\n  \"emesso_da\": \"string\",\n  \"hmac\": \"string\",\n  \"fascia\": \"sviluppatore\",\n  \"fascia_motivo\": \"tetto_individuale\",\n  \"convenzione\": {\n    \"id\": \"string\",\n    \"name\": \"string\"\n  }\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "1d9d78f6-7eda-4902-bbf0-f5d230037fac",
+          "name": "Campo mancante o malformato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sha256\": \"<string>\",\n  \"image\": \"<byte>\",\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"size\": \"<integer>\",\n  \"titolo\": \"<string>\",\n  \"autore\": \"<string>\",\n  \"anno\": \"<string>\",\n  \"note\": \"<string>\",\n  \"turnstile_token\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "39bd1931-7c8d-42dd-8b3a-643749edd892",
+          "name": "Credenziale agente invalida, o verifica anti-bot non superata",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sha256\": \"<string>\",\n  \"image\": \"<byte>\",\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"size\": \"<integer>\",\n  \"titolo\": \"<string>\",\n  \"autore\": \"<string>\",\n  \"anno\": \"<string>\",\n  \"note\": \"<string>\",\n  \"turnstile_token\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "3e8c16d8-3abc-40a4-b963-5f765bd9b07f",
+          "name": "File troppo grande (solo percorso legacy, max 100 MB)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sha256\": \"<string>\",\n  \"image\": \"<byte>\",\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"size\": \"<integer>\",\n  \"titolo\": \"<string>\",\n  \"autore\": \"<string>\",\n  \"anno\": \"<string>\",\n  \"note\": \"<string>\",\n  \"turnstile_token\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Request Entity Too Large",
+          "code": 413,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "887f54c9-77ee-491b-af41-b5dda1ffdfe8",
+          "name": "Quota credenziale esaurita, o rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sha256\": \"<string>\",\n  \"image\": \"<byte>\",\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"size\": \"<integer>\",\n  \"titolo\": \"<string>\",\n  \"autore\": \"<string>\",\n  \"anno\": \"<string>\",\n  \"note\": \"<string>\",\n  \"turnstile_token\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "bbc42203-83a0-450b-a90e-05e6b15c25a5",
+      "name": "Verifica hash dichiarato vs file, e firma HMAC",
+      "request": {
+        "name": "Verifica hash dichiarato vs file, e firma HMAC",
+        "description": {
+          "content": "`image` (l'opera originale, non il PDF) è FACOLTATIVO dalla 1.15.0: senza, verifica solo la firma HMAC (il confronto hash/file è fatto dal client in locale).",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "verify"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "multipart/form-data"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": null,
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "hash",
+              "value": "<string>",
+              "type": "text",
+              "description": "(Required) "
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "description": ""
+            },
+            {
+              "key": "attestazione",
+              "value": "<string>",
+              "type": "text",
+              "description": ""
+            },
+            {
+              "key": "hmac",
+              "value": "<string>",
+              "type": "text",
+              "description": ""
+            },
+            {
+              "key": "titolo",
+              "value": "<string>",
+              "type": "text",
+              "description": ""
+            },
+            {
+              "key": "autore",
+              "value": "<string>",
+              "type": "text",
+              "description": ""
+            },
+            {
+              "key": "anno",
+              "value": "<string>",
+              "type": "text",
+              "description": ""
+            },
+            {
+              "key": "note",
+              "value": "<string>",
+              "type": "text",
+              "description": ""
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "52def1fa-100b-4064-838f-d2319cf87fcb",
+          "name": "Esito verifica",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  },
+                  "key": "hash",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "image",
+                  "value": "<binary>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "attestazione",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "hmac",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "titolo",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "autore",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "anno",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "note",
+                  "value": "<string>",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"hash_dichiarato\": \"string\",\n  \"hash_calcolato\": \"string\",\n  \"coincide\": false,\n  \"hmac_valido\": true\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "e601efa9-04e5-432a-ba06-7ab9f2d1ca9b",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "description": {
+                    "content": "(Required) ",
+                    "type": "text/plain"
+                  },
+                  "key": "hash",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "image",
+                  "value": "<binary>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "attestazione",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "hmac",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "titolo",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "autore",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "anno",
+                  "value": "<string>",
+                  "type": "text"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "note",
+                  "value": "<string>",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "f345b73e-3f79-47d1-9014-badea9c62b75",
+      "name": "Genera il certificato PDF firmato",
+      "request": {
+        "name": "Genera il certificato PDF firmato",
+        "description": {
+          "content": "Riceve l'oggetto restituito da POST /api/hash (deve includere `attestazione` + `hmac`, verificati server-side prima di firmare). Chiama authart server-to-server per la firma crittografica; archivia copia in R2. Campo facoltativo `lang` (it|en, P41): sceglie la lingua dei messaggi d'errore e della prosa disegnata a runtime nel PDF (stringa di attestazione, dati dichiarati, dettagli tecnici, data leggibile). Le etichette del template AcroForm (TITOLO, DIMENSIONE, MIME, SHA-256…) restano italiane. Non influisce sul contenuto attestato né sulla firma HMAC: lo stesso token è valido in entrambe le lingue.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "cert-pdf"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/pdf"
+          }
+        ],
+        "method": "POST",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearerToken}}"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "<object>",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "id": "990e5664-020a-4053-8001-ad10fc5b167a",
+          "name": "PDF firmato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert-pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/pdf"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/pdf"
+            }
+          ],
+          "body": "string",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "7729dbe7-117e-40fd-9044-6da500f82cde",
+          "name": "attestazione incoerente con sha256/timestamp_iso",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert-pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "4e2dd2be-e3f7-4bb1-9030-80fa930d3244",
+          "name": "HMAC non valido",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert-pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "f5e82838-b50c-4ac2-8fc8-49ff9e1e9d53",
+          "name": "Rate limit per-IP (10/60s, il più basso dell'API: endpoint costoso)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert-pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "0b5f08ae-9430-41cc-956e-3b1a29380c6c",
+          "name": "HMAC_SECRET non configurato (fail-closed), oppure firma temporaneamente non disponibile (es. deploy del firmatario in corso) — messaggio generico, riprovare tra qualche minuto",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert-pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: bearer",
+                  "type": "text/plain"
+                },
+                "key": "Authorization",
+                "value": "Bearer <token>"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Service Unavailable",
+          "code": 503,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "c75f29f5-2f31-4c29-a1f5-07c83075bb68",
+      "name": "Prova OpenTimestamps (ancoraggio Bitcoin)",
+      "request": {
+        "name": "Prova OpenTimestamps (ancoraggio Bitcoin)",
+        "description": {},
+        "url": {
+          "path": [
+            "api",
+            "ots"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "hash",
+              "value": "<string>",
+              "description": "(Required) "
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/octet-stream"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "ddf75bc0-62d5-4c8f-9547-ee26d17b6e37",
+          "name": "File .ots",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "ots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/octet-stream"
+            }
+          ],
+          "body": "string",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "44ef2c65-82c4-4e44-affc-7fff82623bcb",
+          "name": "hash malformato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "ots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "2d1888dd-1e9e-47da-9d22-584adc6ffe53",
+          "name": "prova assente",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "ots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "4348ba87-2dcd-4c6e-b181-82f91687fe7d",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "ots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "a0a9716d-190c-474f-a4d9-670272b898fe",
+      "name": "Recupero certificato smarrito",
+      "request": {
+        "name": "Recupero certificato smarrito",
+        "description": {
+          "content": "Restituisce dal R2 il PDF archiviato per quell'impronta (la più antica, se più emissioni). Stesso modello di fiducia del QR: recuperabile solo da chi conosce l'hash.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "cert"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "hash",
+              "value": "<string>",
+              "description": "(Required) "
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/pdf"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "1d0366d8-36e7-4a8e-93d4-9c4cb4963273",
+          "name": "PDF archiviato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/pdf"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/pdf"
+            }
+          ],
+          "body": "string",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "85adc337-7063-475c-809f-c62525eec0f0",
+          "name": "hash malformato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "4ddc1a98-8be1-40a8-8532-e365c3fb876d",
+          "name": "certificato assente",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "3e318252-741d-4896-a417-7e11fbd6755a",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "9474dbf6-1a74-44a1-a90e-91e581aaa3be",
+          "name": "archivio non configurato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "cert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Service Unavailable",
+          "code": 503,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "cf7ecf84-8d33-44c9-9435-f02c18e2bd0a",
+      "name": "Badge SVG \"Opera attestata\"",
+      "request": {
+        "name": "Badge SVG \"Opera attestata\"",
+        "description": {
+          "content": "Embeddabile via <img>. Verde solo se l'hash è realmente in archivio; mai errore HTTP (per non rompere l'immagine).",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "badge"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "hash",
+              "value": "<string>",
+              "description": "(Required) "
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "image/svg+xml"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "8471652b-0f58-41db-9a90-62b93d11a4c7",
+          "name": "SVG (verde 24h cache, grigio 60s cache)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "badge"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "hash",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/svg+xml"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "image/svg+xml"
+            }
+          ],
+          "body": "string",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "a9894b09-ed63-4480-ba8d-696c06b41384",
+      "name": "Badge SVG \"Funziona con Attestazione Spazio Genesi\"",
+      "request": {
+        "name": "Badge SVG \"Funziona con Attestazione Spazio Genesi\"",
+        "description": {
+          "content": "Embeddabile via <img> nel sito del partner (P28). Verde solo se la candidatura con quell'id è 'approved' in vetrina; mai errore HTTP (id malformato o non approvata → badge grigio \"integrazione non verificata\").",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "badge",
+            "integration"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "id",
+              "value": "<string>",
+              "description": "(Required) "
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "image/svg+xml"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "dbaea729-2a38-437c-a5ec-6e43f9d2d4fa",
+          "name": "SVG (verde 24h cache, grigio 60s cache)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "badge",
+                "integration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/svg+xml"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "image/svg+xml"
+            }
+          ],
+          "body": "string",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "4e8882a8-0026-4dd6-b245-4220ba1d4361",
+      "name": "Stato semaforico dei servizi",
+      "request": {
+        "name": "Stato semaforico dei servizi",
+        "description": {
+          "content": "worker/archive/signer/anchor. Cache 180s con stale-while-revalidate. CORS aperto (dato pubblico).",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "status"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "0acecd4b-0ed8-47ca-a3c9-a280de506648",
+          "name": "Stato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"worker\": \"ok\",\n  \"archive\": \"string\",\n  \"signer\": \"string\",\n  \"anchor\": \"string\",\n  \"checked_at\": \"2019-03-03T21:13:01.831Z\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "527d8c94-0029-4858-9940-0ddcb9870ead",
+      "name": "Storico 90 giorni per componente",
+      "request": {
+        "name": "Storico 90 giorni per componente",
+        "description": {
+          "content": "Rollup giornaliero per la pagina /status/. Ogni giorno riporta lo stato peggiore ('s') e, per i giorni registrati a fasce di 30 minuti (dal rilascio 1.30.0), il conteggio delle 48 fasce ('b') da cui si ricava la durata reale del disservizio. L'uptime è pesato sul tempo, non binario per-giorno. CORS aperto.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "status-history"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "d6a3e2f7-bfb9-4483-8136-1080f5ca80a9",
+          "name": "Storico",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "status-history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"updated\": \"1987-09-20T21:40:01.401Z\",\n  \"window_days\": 90,\n  \"overall\": \"ok\",\n  \"components\": [\n    {\n      \"key\": \"anchor\",\n      \"label\": \"string\",\n      \"current\": \"nodata\",\n      \"uptime\": 99.9,\n      \"days\": [\n        {\n          \"d\": \"1994-05-10\",\n          \"s\": \"nodata\",\n          \"b\": {\n            \"ok\": 723,\n            \"degraded\": 1098,\n            \"down\": 9312,\n            \"n\": 636\n          }\n        },\n        {\n          \"d\": \"2016-01-27\",\n          \"s\": \"degraded\",\n          \"b\": {\n            \"ok\": 6300,\n            \"degraded\": 2717,\n            \"down\": 1489,\n            \"n\": 6874\n          }\n        }\n      ]\n    },\n    {\n      \"key\": \"anchor\",\n      \"label\": \"string\",\n      \"current\": \"nodata\",\n      \"uptime\": 99.9,\n      \"days\": [\n        {\n          \"d\": \"1963-03-21\",\n          \"s\": \"nodata\",\n          \"b\": {\n            \"ok\": 5201,\n            \"degraded\": 715,\n            \"down\": 2052,\n            \"n\": 1798\n          }\n        },\n        {\n          \"d\": \"2017-05-21\",\n          \"s\": \"degraded\",\n          \"b\": {\n            \"ok\": 7062,\n            \"degraded\": 1754,\n            \"down\": 3786,\n            \"n\": 1163\n          }\n        }\n      ]\n    }\n  ]\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "9ed0ec77-3aa4-49a2-a607-a0d5909a04b6",
+      "name": "Eventi fini di salute per un giorno",
+      "request": {
+        "name": "Eventi fini di salute per un giorno",
+        "description": {
+          "content": "Errori, degradi, rallentamenti sotto soglia. CORS aperto.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "health-log"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "day",
+              "value": "<date>",
+              "description": "default: oggi UTC"
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "26dad0b0-e291-44b4-b003-a276486c08c3",
+          "name": "Eventi",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "health-log"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "day",
+                  "value": "<date>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "daaf7133-09e2-4dfd-af0b-0e45e147097f",
+      "name": "Elenco pubblico delle integrazioni approvate",
+      "request": {
+        "name": "Elenco pubblico delle integrazioni approvate",
+        "description": {
+          "content": "Sole candidature con status 'approved'. Sorgente machine-readable per la vetrina statica su attestazione.spaziogenesi.org/integrazioni/ (P29). Cache 60s, CORS aperto.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "integrations"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "dcd1f05e-849c-49fe-89cc-29496b59be51",
+          "name": "Elenco",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"count\": 6853,\n  \"items\": [\n    {\n      \"id\": \"string\",\n      \"app_name\": \"string\",\n      \"url\": \"string\",\n      \"description\": \"string\",\n      \"logo_url\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"app_name\": \"string\",\n      \"url\": \"string\",\n      \"description\": \"string\",\n      \"logo_url\": \"string\"\n    }\n  ]\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "d256cd34-1050-4ac5-aff8-a60a884f208c",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "integrations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "ecec3c70-f83c-4c0c-8eba-566a7f2818fe",
+      "name": "Logo di un'integrazione approvata",
+      "request": {
+        "name": "Logo di un'integrazione approvata",
+        "description": {
+          "content": "Serve il logo caricato dal partner (P28), SOLO per candidature con status 'approved' — 404 altrimenti. URL riportato in logo_url da GET /api/integrations.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "integrazioni",
+            "logo",
+            ":id"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "id",
+              "description": "(Required) "
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "image/png"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "0bb06d91-210d-4fd5-9768-e56966f94cf1",
+          "name": "Immagine (PNG/JPEG/WebP)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "integrazioni",
+                "logo",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/png"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "image/png"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "10f61879-b10e-4a86-88cd-b28b654ea4df",
+          "name": "Non trovato (id inesistente, non approvato, o servizio non disponibile)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "integrazioni",
+                "logo",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "cc92b513-27fd-4ce2-bf88-8f334ec7fd0b",
+      "name": "Pagina pubblica \"certificato verificabile online\"",
+      "request": {
+        "name": "Pagina pubblica \"certificato verificabile online\"",
+        "description": {
+          "content": "HTML server-rendered: impronta, data, ancoraggio, QR. 404 se l'opera non è in archivio.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "c",
+            ":hash"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "lang",
+              "value": "<string>",
+              "description": "Lingua della pagina (P41). Default 'it'."
+            }
+          ],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "hash",
+              "description": "(Required) "
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "text/html"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "26546a1a-c070-4318-a871-baf0ebef508f",
+          "name": "Pagina HTML",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "c",
+                ":hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "hash",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/html"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "f70f04c7-8445-4263-996e-704fc7e559d7",
+          "name": "Non in archivio",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "c",
+                ":hash"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "hash",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "1a7b29ac-aca2-480c-853c-f6e34d4f3494",
+      "name": "Avvia il device flow (P21)",
+      "request": {
+        "name": "Avvia il device flow (P21)",
+        "description": {
+          "content": "Nessuna autenticazione richiesta. Crea una richiesta di autorizzazione a breve scadenza.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "agent",
+            "authorize"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "030a577c-a46c-4a32-969d-b20ece233260",
+          "name": "Codice generato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "authorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"code\": \"string\",\n  \"verification_url\": \"string\",\n  \"expires_in\": 600,\n  \"interval\": 3\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "a62d4abe-1b80-4d94-953f-3f054bbc6999",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "authorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {}
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "d63077bc-3a8f-446c-a71c-64913222d93d",
+      "name": "Pagina di autorizzazione device flow",
+      "request": {
+        "name": "Pagina di autorizzazione device flow",
+        "description": {
+          "content": "HTML servita dal Worker con widget Turnstile: l'umano autorizza qui l'agente/MCP.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "agent",
+            "authorize"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "code",
+              "value": "<string>",
+              "description": "(Required) "
+            },
+            {
+              "disabled": false,
+              "key": "lang",
+              "value": "<string>",
+              "description": "Lingua della pagina (P41). Default 'it'."
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "text/html"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "0249c9f6-1eda-405c-9e47-e209d4963746",
+          "name": "Pagina HTML",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "agent",
+                "authorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "<string>"
+                },
+                {
+                  "key": "lang",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/html"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "530fa07a-365a-4a6c-bc56-bf61115c215b",
+          "name": "codice non valido",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "agent",
+                "authorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "<string>"
+                },
+                {
+                  "key": "lang",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "e41f39c4-6156-4990-81ed-6102ab792f0d",
+          "name": "richiesta scaduta",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "agent",
+                "authorize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "<string>"
+                },
+                {
+                  "key": "lang",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Gone",
+          "code": 410,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "cc04a4e4-623a-4f06-b2db-8f9cc781c8e3",
+      "name": "Approva il device flow, genera il session token",
+      "request": {
+        "name": "Approva il device flow, genera il session token",
+        "description": {
+          "content": "Chiamata dalla pagina /agent/authorize dopo il completamento della challenge Turnstile.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "agent",
+            "approve"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "method": "POST",
+        "auth": null,
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "id": "8337bdc9-4bcc-439f-a02d-77bfd398bd4a",
+          "name": "Approvato",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "e53a4515-4136-47a0-9e92-7f88a66f93a3",
+          "name": "codice o token mancante",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "35be2055-157b-4fe1-8dfe-1ed7ce6a328d",
+          "name": "verifica anti-bot non superata",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "6c7cbd96-15b0-4cbc-a553-e4919adae80e",
+          "name": "richiesta già gestita",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "050b35ad-cb71-4a2b-996c-bc0f855da517",
+          "name": "richiesta scaduta",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Gone",
+          "code": 410,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "ab97ded2-2546-4c2e-8da2-291385c91009",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "approve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"<string>\",\n  \"turnstile_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    },
+    {
+      "id": "e7080b53-da3f-4ae7-9f83-26433d7f6e86",
+      "name": "Polling del device flow",
+      "request": {
+        "name": "Polling del device flow",
+        "description": {
+          "content": "Il token è consegnato UNA SOLA VOLTA: dopo la prima lettura, i poll successivi restituiscono status 'claimed'.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "api",
+            "agent",
+            "token"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [
+            {
+              "disabled": false,
+              "key": "code",
+              "value": "<string>",
+              "description": "(Required) "
+            }
+          ],
+          "variable": []
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "c1e7fa33-98ba-47a7-9050-6cfc923912c5",
+          "name": "Stato o token",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"status\": \"approved\",\n  \"token\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "f99df437-b0e0-4431-8748-848013d9e62d",
+          "name": "richiesta scaduta",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Gone",
+          "code": 410,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        },
+        {
+          "id": "c09d86e5-f2fe-40f7-9b5c-2ac21fec3265",
+          "name": "Rate limit per-IP (60/60s)",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "api",
+                "agent",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Too Many Requests",
+          "code": 429,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "body": "",
+          "cookie": [],
+          "_postman_previewlanguage": "text"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://imgauth.spaziogenesi.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8819cbb3-a206-4b64-970a-bd69a6439807",
+    "name": "imgauth — API di attestazione opere digitali",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Motore di attestazione Spazio Genesi ETS. Full privacy: l'impronta SHA-256 si calcola sul client, il file non viene mai inviato al server. Contratto reale in italiano (non tradurre i nomi campo). Vedi https://attestazione.spaziogenesi.org per l'interfaccia utente e https://github.com/SPAZIO-GENESI/imgauth per il codice sorgente (AGPL-3.0).\n\nContact Support:\n Name: Spazio Genesi ETS",
+      "type": "text/plain"
+    }
+  }
+}

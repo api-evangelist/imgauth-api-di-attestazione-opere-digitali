@@ -1,0 +1,349 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "imgauth — API di attestazione opere digitali",
+    "version": "1.34.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Health check",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/ping"
+      },
+      "docs": "Verifica che il Worker risponda e restituisce la versione del motore."
+    },
+    {
+      "info": {
+        "name": "Attesta un'impronta SHA-256",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://imgauth.spaziogenesi.org/api/hash",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        },
+        "auth": {
+          "type": "bearer",
+          "token": "{{bearerToken}}"
+        }
+      },
+      "docs": "Percorso primario (dalla 1.15.0): riceve l'impronta calcolata sul client (full privacy). Percorso legacy: file inline base64 in `image` (hash calcolato dal server, tetto 100 MB). Se assente una credenziale agente valida (vedi agentBearer), è richiesto `turnstile_token` quando TURNSTILE_SECRET è configurato."
+    },
+    {
+      "info": {
+        "name": "Verifica hash dichiarato vs file, e firma HMAC",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://imgauth.spaziogenesi.org/api/verify",
+        "body": {
+          "type": "multipart-form",
+          "data": [
+            {
+              "name": "hash",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "image",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "attestazione",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "hmac",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "titolo",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "autore",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "anno",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "note",
+              "type": "text",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "`image` (l'opera originale, non il PDF) è FACOLTATIVO dalla 1.15.0: senza, verifica solo la firma HMAC (il confronto hash/file è fatto dal client in locale)."
+    },
+    {
+      "info": {
+        "name": "Genera il certificato PDF firmato",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://imgauth.spaziogenesi.org/api/cert-pdf",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        },
+        "auth": {
+          "type": "bearer",
+          "token": "{{bearerToken}}"
+        }
+      },
+      "docs": "Riceve l'oggetto restituito da POST /api/hash (deve includere `attestazione` + `hmac`, verificati server-side prima di firmare). Chiama authart server-to-server per la firma crittografica; archivia copia in R2. Campo facoltativo `lang` (it|en, P41): sceglie la lingua dei messaggi d'errore e della prosa disegnata a runtime nel PDF (stringa di attestazione, dati dichiarati, dettagli tecnici, data leggibile). Le etichette del template AcroForm (TITOLO, DIMENSIONE, MIME, SHA-256…) restano italiane. "
+    },
+    {
+      "info": {
+        "name": "Prova OpenTimestamps (ancoraggio Bitcoin)",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/ots",
+        "params": [
+          {
+            "name": "hash",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "Prova OpenTimestamps (ancoraggio Bitcoin)"
+    },
+    {
+      "info": {
+        "name": "Recupero certificato smarrito",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/cert",
+        "params": [
+          {
+            "name": "hash",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "Restituisce dal R2 il PDF archiviato per quell'impronta (la più antica, se più emissioni). Stesso modello di fiducia del QR: recuperabile solo da chi conosce l'hash."
+    },
+    {
+      "info": {
+        "name": "Badge SVG \"Opera attestata\"",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/badge",
+        "params": [
+          {
+            "name": "hash",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "Embeddabile via <img>. Verde solo se l'hash è realmente in archivio; mai errore HTTP (per non rompere l'immagine)."
+    },
+    {
+      "info": {
+        "name": "Badge SVG \"Funziona con Attestazione Spazio Genesi\"",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/badge/integration",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "Embeddabile via <img> nel sito del partner (P28). Verde solo se la candidatura con quell'id è 'approved' in vetrina; mai errore HTTP (id malformato o non approvata → badge grigio \"integrazione non verificata\")."
+    },
+    {
+      "info": {
+        "name": "Stato semaforico dei servizi",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/status"
+      },
+      "docs": "worker/archive/signer/anchor. Cache 180s con stale-while-revalidate. CORS aperto (dato pubblico)."
+    },
+    {
+      "info": {
+        "name": "Storico 90 giorni per componente",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/status-history"
+      },
+      "docs": "Rollup giornaliero per la pagina /status/. Ogni giorno riporta lo stato peggiore ('s') e, per i giorni registrati a fasce di 30 minuti (dal rilascio 1.30.0), il conteggio delle 48 fasce ('b') da cui si ricava la durata reale del disservizio. L'uptime è pesato sul tempo, non binario per-giorno. CORS aperto."
+    },
+    {
+      "info": {
+        "name": "Eventi fini di salute per un giorno",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/health-log",
+        "params": [
+          {
+            "name": "day",
+            "value": "",
+            "type": "query",
+            "description": "default: oggi UTC"
+          }
+        ]
+      },
+      "docs": "Errori, degradi, rallentamenti sotto soglia. CORS aperto."
+    },
+    {
+      "info": {
+        "name": "Elenco pubblico delle integrazioni approvate",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/integrations"
+      },
+      "docs": "Sole candidature con status 'approved'. Sorgente machine-readable per la vetrina statica su attestazione.spaziogenesi.org/integrazioni/ (P29). Cache 60s, CORS aperto."
+    },
+    {
+      "info": {
+        "name": "Logo di un'integrazione approvata",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/integrazioni/logo/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Serve il logo caricato dal partner (P28), SOLO per candidature con status 'approved' — 404 altrimenti. URL riportato in logo_url da GET /api/integrations."
+    },
+    {
+      "info": {
+        "name": "Pagina pubblica \"certificato verificabile online\"",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/c/:hash",
+        "params": [
+          {
+            "name": "hash",
+            "value": "",
+            "type": "path"
+          },
+          {
+            "name": "lang",
+            "value": "",
+            "type": "query",
+            "description": "Lingua della pagina (P41). Default 'it'."
+          }
+        ]
+      },
+      "docs": "HTML server-rendered: impronta, data, ancoraggio, QR. 404 se l'opera non è in archivio."
+    },
+    {
+      "info": {
+        "name": "Avvia il device flow (P21)",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://imgauth.spaziogenesi.org/api/agent/authorize"
+      },
+      "docs": "Nessuna autenticazione richiesta. Crea una richiesta di autorizzazione a breve scadenza."
+    },
+    {
+      "info": {
+        "name": "Pagina di autorizzazione device flow",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/agent/authorize",
+        "params": [
+          {
+            "name": "code",
+            "value": "",
+            "type": "query"
+          },
+          {
+            "name": "lang",
+            "value": "",
+            "type": "query",
+            "description": "Lingua della pagina (P41). Default 'it'."
+          }
+        ]
+      },
+      "docs": "HTML servita dal Worker con widget Turnstile: l'umano autorizza qui l'agente/MCP."
+    },
+    {
+      "info": {
+        "name": "Approva il device flow, genera il session token",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://imgauth.spaziogenesi.org/api/agent/approve",
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Chiamata dalla pagina /agent/authorize dopo il completamento della challenge Turnstile."
+    },
+    {
+      "info": {
+        "name": "Polling del device flow",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://imgauth.spaziogenesi.org/api/agent/token",
+        "params": [
+          {
+            "name": "code",
+            "value": "",
+            "type": "query"
+          }
+        ]
+      },
+      "docs": "Il token è consegnato UNA SOLA VOLTA: dopo la prima lettura, i poll successivi restituiscono status 'claimed'."
+    }
+  ],
+  "bundled": true
+}
