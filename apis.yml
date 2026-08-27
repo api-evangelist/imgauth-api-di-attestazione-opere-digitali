@@ -46,102 +46,277 @@ tags_raw:
   - e-signature
   - MCP
 apis:
-  - name: imgauth REST API
-    description: >-
-      Attestation/proof-of-existence REST API. Client-side SHA-256 hashing, signed PDF certificates, RFC 3161
-      timestamps, OpenTimestamps/Bitcoin anchoring, verifiable certificate pages, and status telemetry. Field names are
-      Italian by design.
-    humanURL: https://imgauth.spaziogenesi.org
-    baseURL: https://imgauth.spaziogenesi.org
-    tags:
-      - digital notarization
-      - Timestamping
-      - proof-of-existence
-      - content authenticity
-      - Provenance
-      - Copyright
-      - IP protection
-      - Blockchain
-      - Bitcoin
-      - OpenTimestamps
-      - Security
-      - Document
-      - E-Signature
-      - MCP
-    tags_raw:
-      - digital notarization
-      - timestamping
-      - proof-of-existence
-      - content authenticity
-      - provenance
-      - copyright
-      - IP protection
-      - blockchain
-      - Bitcoin
-      - OpenTimestamps
-      - security
-      - document
-      - e-signature
-      - MCP
-    properties:
-      - type: OpenAPI
-        url: openapi/imgauth-api-di-attestazione-opere-digitali-openapi-original.json
-      - type: OpenAPI
-        url: https://imgauth.spaziogenesi.org/openapi.json
-      - type: Overlay
-        url: overlays/imgauth-api-di-attestazione-opere-digitali-openapi-overlay.yaml
-      - type: Documentation
-        url: https://attestazione.spaziogenesi.org/en/developer/
-      - type: APIReference
-        url: https://attestazione.spaziogenesi.org/docs/
-  - name: imgauth Remote MCP Server
-    description: >-
-      Hosted, zero-install MCP server (Streamable HTTP, protocol 2025-06-18) exposing the attestation service
-      to MCP-capable agents. The eight tools were read live from tools/list on 2026-08-11: service_status,
-      check_anchor, verify_attestation, lookup_certificate (public, no credential) plus authorize,
-      complete_authorization, attest_hash, create_certificate_pdf (credentialed). Credentials via device flow
-      or an Authorization: Bearer sg_k_… header. File bytes are never accepted as tool arguments.
-    humanURL: https://github.com/SPAZIO-GENESI/attest-mcp-remote
-    baseURL: https://attest-mcp-remote.it-e3f.workers.dev/mcp
-    tags:
-      - digital notarization
-      - Timestamping
-      - proof-of-existence
-      - content authenticity
-      - Provenance
-      - Copyright
-      - IP protection
-      - Blockchain
-      - Bitcoin
-      - OpenTimestamps
-      - Security
-      - Document
-      - E-Signature
-      - MCP
-    tags_raw:
-      - digital notarization
-      - timestamping
-      - proof-of-existence
-      - content authenticity
-      - provenance
-      - copyright
-      - IP protection
-      - blockchain
-      - Bitcoin
-      - OpenTimestamps
-      - security
-      - document
-      - e-signature
-      - MCP
-    properties:
-      - type: MCPServer
-        url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
-      - type: MCPServer
-        url: mcp/imgauth-api-di-attestazione-opere-digitali-mcp.yml
-      - type: ToolCrosswalk
-        url: mcp/imgauth-api-di-attestazione-opere-digitali-tool-crosswalk.yml
-      - type: Documentation
-        url: https://attestazione.spaziogenesi.org/en/developer/
+- name: imgauth Remote MCP Server
+  description: >-
+    Hosted, zero-install MCP server (Streamable HTTP, protocol 2025-06-18) exposing the attestation service
+    to MCP-capable agents. The eight tools were read live from tools/list on 2026-08-11: service_status,
+    check_anchor, verify_attestation, lookup_certificate (public, no credential) plus authorize, complete_authorization,
+    attest_hash, create_certificate_pdf (credentialed). Credentials via device flow or an Authorization:
+    Bearer sg_k_… header. File bytes are never accepted as tool arguments.
+  humanURL: https://github.com/SPAZIO-GENESI/attest-mcp-remote
+  baseURL: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+  tags:
+  - digital notarization
+  - Timestamping
+  - proof-of-existence
+  - content authenticity
+  - Provenance
+  - Copyright
+  - IP protection
+  - Blockchain
+  - Bitcoin
+  - OpenTimestamps
+  - Security
+  - Document
+  - E-Signature
+  - MCP
+  tags_raw:
+  - digital notarization
+  - timestamping
+  - proof-of-existence
+  - content authenticity
+  - provenance
+  - copyright
+  - IP protection
+  - blockchain
+  - Bitcoin
+  - OpenTimestamps
+  - security
+  - document
+  - e-signature
+  - MCP
+  properties:
+  - type: MCPServer
+    url: https://attest-mcp-remote.it-e3f.workers.dev/mcp
+  - type: MCPServer
+    url: mcp/imgauth-api-di-attestazione-opere-digitali-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/imgauth-api-di-attestazione-opere-digitali-tool-crosswalk.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-agent-api
+  name: imgauth — API di attestazione opere digitali Agent API
+  description: >-
+    The Agent API from imgauth — API di attestazione opere digitali — 4 operation(s) for agent.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Agent
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-agent-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-badge-api
+  name: imgauth — API di attestazione opere digitali Badge API
+  description: >-
+    The Badge API from imgauth — API di attestazione opere digitali — 2 operation(s) for badge.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Badge
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-badge-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-c-api
+  name: imgauth — API di attestazione opere digitali C API
+  description: The C API from imgauth — API di attestazione opere digitali — 1 operation(s) for c.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - C
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-c-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-cert-api
+  name: imgauth — API di attestazione opere digitali Cert API
+  description: >-
+    The Cert API from imgauth — API di attestazione opere digitali — 1 operation(s) for cert.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Cert
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-cert-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-cert-pdf-api
+  name: imgauth — API di attestazione opere digitali Cert Pdf API
+  description: >-
+    The Cert Pdf API from imgauth — API di attestazione opere digitali — 1 operation(s) for cert pdf.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Cert Pdf
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-cert-pdf-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-hash-api
+  name: imgauth — API di attestazione opere digitali Hash API
+  description: >-
+    The Hash API from imgauth — API di attestazione opere digitali — 1 operation(s) for hash.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Hash
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-hash-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-health-log-api
+  name: imgauth — API di attestazione opere digitali Health Log API
+  description: >-
+    The Health Log API from imgauth — API di attestazione opere digitali — 1 operation(s) for health log.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Health Log
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-health-log-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-integrations-api
+  name: imgauth — API di attestazione opere digitali Integrations API
+  description: >-
+    The Integrations API from imgauth — API di attestazione opere digitali — 1 operation(s) for integrations.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-integrazioni-api
+  name: imgauth — API di attestazione opere digitali Integrazioni API
+  description: >-
+    The Integrazioni API from imgauth — API di attestazione opere digitali — 1 operation(s) for integrazioni.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Integrazioni
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-integrazioni-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-ots-api
+  name: imgauth — API di attestazione opere digitali Ots API
+  description: The Ots API from imgauth — API di attestazione opere digitali — 1 operation(s) for ots.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Ots
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-ots-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-ping-api
+  name: imgauth — API di attestazione opere digitali Ping API
+  description: >-
+    The Ping API from imgauth — API di attestazione opere digitali — 1 operation(s) for ping.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Ping
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-ping-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-status-api
+  name: imgauth — API di attestazione opere digitali Status API
+  description: >-
+    The Status API from imgauth — API di attestazione opere digitali — 1 operation(s) for status.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-status-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-status-history-api
+  name: imgauth — API di attestazione opere digitali Status History API
+  description: >-
+    The Status History API from imgauth — API di attestazione opere digitali — 1 operation(s) for status
+    history.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Status History
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-status-history-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
+- aid: >-
+    imgauth-api-di-attestazione-opere-digitali:imgauth-api-di-attestazione-opere-digitali-verify-api
+  name: imgauth — API di attestazione opere digitali Verify API
+  description: >-
+    The Verify API from imgauth — API di attestazione opere digitali — 1 operation(s) for verify.
+  humanURL: https://imgauth.spaziogenesi.org
+  baseURL: https://imgauth.spaziogenesi.org
+  tags:
+  - Verify
+  properties:
+  - type: OpenAPI
+    url: openapi/imgauth-api-di-attestazione-opere-digitali-verify-api-openapi.yml
+  - type: Documentation
+    url: https://attestazione.spaziogenesi.org/en/developer/
+  - type: APIReference
+    url: https://attestazione.spaziogenesi.org/docs/
 maintainers:
   - FN: Spazio Genesi ETS
     email: it@spaziogenesi.org
@@ -154,6 +329,8 @@ generated:
   confidence: 95
   at: '2026-07-19T13:45:33.951Z'
 common:
+- type: Overlay
+  url: overlays/imgauth-api-di-attestazione-opere-digitali-openapi-overlay.yaml
 - type: TrustCenter
   url: security/imgauth-api-di-attestazione-opere-digitali-trust-center.yml
 - type: VulnerabilityDisclosure
