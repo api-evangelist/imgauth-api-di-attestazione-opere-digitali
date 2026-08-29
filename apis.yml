@@ -11,6 +11,19 @@ description: >-
   a GitHub Action, embeddable SVG badges and three CORS-open public status endpoints. The API contract is
   in Italian by design. Positioned explicitly as a NON-QUALIFIED attestation under eIDAS 2.0.
 url: https://raw.githubusercontent.com/api-evangelist/imgauth-api-di-attestazione-opere-digitali/refs/heads/main/apis.yml
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 created: '2026-07-19'
 modified: '2026-08-11'
 specificationVersion: '0.23'
