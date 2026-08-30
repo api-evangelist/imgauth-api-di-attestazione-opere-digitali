@@ -30,10 +30,10 @@ specificationVersion: '0.23'
 image: https://attestazione.spaziogenesi.org/og.png
 tags:
   - digital notarization
-  - Timestamping
+  - timestamping
   - proof-of-existence
   - content authenticity
-  - Provenance
+  - provenance
   - Copyright
   - IP protection
   - Blockchain
@@ -41,7 +41,7 @@ tags:
   - OpenTimestamps
   - Security
   - Document
-  - E-Signature
+  - e-signature
   - MCP
 tags_raw:
   - digital notarization
@@ -70,10 +70,10 @@ apis:
   baseURL: https://attest-mcp-remote.it-e3f.workers.dev/mcp
   tags:
   - digital notarization
-  - Timestamping
+  - timestamping
   - proof-of-existence
   - content authenticity
-  - Provenance
+  - provenance
   - Copyright
   - IP protection
   - Blockchain
@@ -81,7 +81,7 @@ apis:
   - OpenTimestamps
   - Security
   - Document
-  - E-Signature
+  - e-signature
   - MCP
   tags_raw:
   - digital notarization
@@ -115,6 +115,8 @@ apis:
   humanURL: https://imgauth.spaziogenesi.org
   baseURL: https://imgauth.spaziogenesi.org
   tags:
+  - Agents
+  tags_raw:
   - Agent
   properties:
   - type: OpenAPI
@@ -226,6 +228,8 @@ apis:
   humanURL: https://imgauth.spaziogenesi.org
   baseURL: https://imgauth.spaziogenesi.org
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
