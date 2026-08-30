@@ -1,0 +1,153 @@
+openapi: 3.2.0
+info:
+  title: imgauth — API di attestazione opere digitali Agent API
+  version: 1.34.1
+  description: 'Motore di attestazione Spazio Genesi ETS. Full privacy: l''impronta SHA-256 si calcola sul client, il file non viene mai inviato al server. Contratto reale in italiano (non tradurre i nomi campo). Vedi https://attestazione.spaziogenesi.org per l''interfaccia utente e https://github.com/SPAZIO-GENESI/imgauth per il codice sorgente (AGPL-3.0).'
+  contact:
+    name: Spazio Genesi ETS
+    url: https://spaziogenesi.org
+  license:
+    name: AGPL-3.0-only
+    url: https://github.com/SPAZIO-GENESI/imgauth/blob/main/LICENSE
+servers:
+- url: https://imgauth.spaziogenesi.org
+  description: produzione
+tags:
+- name: Agent
+paths:
+  /api/agent/authorize:
+    post:
+      summary: Avvia il device flow (P21)
+      description: Nessuna autenticazione richiesta. Crea una richiesta di autorizzazione a breve scadenza.
+      responses:
+        '200':
+          description: Codice generato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  verification_url:
+                    type: string
+                  expires_in:
+                    type: integer
+                    example: 600
+                  interval:
+                    type: integer
+                    example: 3
+        '429':
+          description: Rate limit per-IP (60/60s)
+      tags:
+      - Agent
+  /agent/authorize:
+    get:
+      summary: Pagina di autorizzazione device flow
+      description: 'HTML servita dal Worker con widget Turnstile: l''umano autorizza qui l''agente/MCP.'
+      parameters:
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - it
+          - en
+        description: Lingua della pagina (P41). Default 'it'.
+      responses:
+        '200':
+          description: Pagina HTML
+          content:
+            text/html: {}
+        '400':
+          description: codice non valido
+        '410':
+          description: richiesta scaduta
+      tags:
+      - Agent
+  /api/agent/approve:
+    post:
+      summary: Approva il device flow, genera il session token
+      description: Chiamata dalla pagina /agent/authorize dopo il completamento della challenge Turnstile.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                turnstile_token:
+                  type: string
+              required:
+              - code
+              - turnstile_token
+      responses:
+        '200':
+          description: Approvato
+        '400':
+          description: codice o token mancante
+        '403':
+          description: verifica anti-bot non superata
+        '409':
+          description: richiesta già gestita
+        '410':
+          description: richiesta scaduta
+        '429':
+          description: Rate limit per-IP (60/60s)
+      tags:
+      - Agent
+  /api/agent/token:
+    get:
+      summary: Polling del device flow
+      description: 'Il token è consegnato UNA SOLA VOLTA: dopo la prima lettura, i poll successivi restituiscono status ''claimed''.'
+      parameters:
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Stato o token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - pending
+                    - approved
+                    - claimed
+                  token:
+                    type:
+                    - string
+                    - 'null'
+                    description: presente solo su status:approved, una sola volta
+        '410':
+          description: richiesta scaduta
+        '429':
+          description: Rate limit per-IP (60/60s)
+      tags:
+      - Agent
+components:
+  securitySchemes:
+    agentBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: sg_k_<id>_<secret> oppure sg_s_<id>_<secret>
+      description: 'Credenziale agente (P21): API key per convenzioni o session token da device flow. Sblocca SOLO il bypass della challenge Turnstile su POST /api/hash — HMAC, timestamp server e rate limit per-IP restano invariati. Facoltativa: senza header, il percorso Turnstile è identico a prima.'
+    voucherHeader:
+      type: apiKey
+      in: header
+      name: X-SG-Voucher
+      description: 'Voucher firmato stateless (P25 §2.7): ottenuto SOLO tramite il flusso OAuth "Attesta con la tua email" sul sito — non c''è un endpoint pubblico in questo contratto che lo emette. TTL 8h. Bypassa il solo Turnstile su /api/hash e /api/cert-pdf, applica pool/tetto di un''eventuale convenzione o la fascia Professionale — stesso principio del bearer agente.'
