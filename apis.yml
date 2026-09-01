@@ -30,10 +30,10 @@ specificationVersion: '0.23'
 image: https://attestazione.spaziogenesi.org/og.png
 tags:
   - digital notarization
-  - timestamping
+  - Timestamping
   - proof-of-existence
   - content authenticity
-  - provenance
+  - Provenance
   - Copyright
   - IP protection
   - Blockchain
@@ -41,7 +41,7 @@ tags:
   - OpenTimestamps
   - Security
   - Document
-  - e-signature
+  - E-Signature
   - MCP
 tags_raw:
   - digital notarization
@@ -70,10 +70,10 @@ apis:
   baseURL: https://attest-mcp-remote.it-e3f.workers.dev/mcp
   tags:
   - digital notarization
-  - timestamping
+  - Timestamping
   - proof-of-existence
   - content authenticity
-  - provenance
+  - Provenance
   - Copyright
   - IP protection
   - Blockchain
@@ -81,7 +81,7 @@ apis:
   - OpenTimestamps
   - Security
   - Document
-  - e-signature
+  - E-Signature
   - MCP
   tags_raw:
   - digital notarization
@@ -346,6 +346,9 @@ generated:
   confidence: 95
   at: '2026-07-19T13:45:33.951Z'
 common:
+- type: License
+  name: AGPL-3.0
+  url: https://github.com/SPAZIO-GENESI/imgauth/blob/main/LICENSE
 - type: Overlay
   url: overlays/imgauth-api-di-attestazione-opere-digitali-openapi-overlay.yaml
 - type: TrustCenter
