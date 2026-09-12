@@ -361,6 +361,8 @@ generated:
   confidence: 95
   at: '2026-07-19T13:45:33.951Z'
 common:
+- type: Website
+  url: https://www.spaziogenesi.org/
 - type: License
   name: AGPL-3.0
   url: https://github.com/SPAZIO-GENESI/imgauth/blob/main/LICENSE
