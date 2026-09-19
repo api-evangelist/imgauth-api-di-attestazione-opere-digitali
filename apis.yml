@@ -55,7 +55,7 @@ tags:
   - Bitcoin
   - OpenTimestamps
   - Security
-  - Document
+  - Documents
   - E-Signature
   - MCP
 tags_raw:
@@ -95,7 +95,7 @@ apis:
   - Bitcoin
   - OpenTimestamps
   - Security
-  - Document
+  - Documents
   - E-Signature
   - MCP
   tags_raw:
