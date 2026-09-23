@@ -71,6 +71,8 @@ paths:
           description: Rate limit per-IP (60/60s)
       tags:
       - Verify
+      operationId: postApiVerify
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

@@ -44,6 +44,8 @@ paths:
           description: Non in archivio
       tags:
       - C
+      operationId: getCByHash
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

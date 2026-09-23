@@ -43,6 +43,8 @@ paths:
                     format: date-time
       tags:
       - Status
+      operationId: getApiStatus
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

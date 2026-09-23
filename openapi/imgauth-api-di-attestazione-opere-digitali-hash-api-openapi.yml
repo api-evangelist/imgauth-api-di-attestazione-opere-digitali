@@ -156,6 +156,8 @@ paths:
                 $ref: '#/components/schemas/Errore'
       tags:
       - Hash
+      operationId: postApiHash
+      x-operation-id-source: derived
 components:
   schemas:
     Errore:

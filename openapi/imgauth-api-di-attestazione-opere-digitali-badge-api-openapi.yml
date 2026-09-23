@@ -18,7 +18,7 @@ paths:
   /api/badge:
     get:
       summary: Badge SVG "Opera attestata"
-      description: Embeddabile via <img>. Verde solo se l'hash è realmente in archivio; mai errore HTTP (per non rompere l'immagine).
+      description: Embeddabile via . Verde solo se l'hash è realmente in archivio; mai errore HTTP (per non rompere l'immagine).
       parameters:
       - name: hash
         in: query
@@ -34,10 +34,12 @@ paths:
                 type: string
       tags:
       - Badge
+      operationId: getApiBadge
+      x-operation-id-source: derived
   /api/badge/integration:
     get:
       summary: Badge SVG "Funziona con Attestazione Spazio Genesi"
-      description: Embeddabile via <img> nel sito del partner (P28). Verde solo se la candidatura con quell'id è 'approved' in vetrina; mai errore HTTP (id malformato o non approvata → badge grigio "integrazione non verificata").
+      description: Embeddabile via nel sito del partner (P28). Verde solo se la candidatura con quell'id è 'approved' in vetrina; mai errore HTTP (id malformato o non approvata → badge grigio "integrazione non verificata").
       parameters:
       - name: id
         in: query
@@ -54,6 +56,8 @@ paths:
                 type: string
       tags:
       - Badge
+      operationId: getApiBadgeIntegration
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

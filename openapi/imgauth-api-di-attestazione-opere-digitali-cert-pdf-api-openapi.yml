@@ -48,6 +48,8 @@ paths:
           description: HMAC_SECRET non configurato (fail-closed), oppure firma temporaneamente non disponibile (es. deploy del firmatario in corso) — messaggio generico, riprovare tra qualche minuto
       tags:
       - Cert Pdf
+      operationId: postApiCertPdf
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

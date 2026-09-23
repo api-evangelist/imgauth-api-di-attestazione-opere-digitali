@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: imgauth — API di attestazione opere digitali Integrations API
+  title: imgauth — API di attestazione opere digitali Integrations…
   version: 1.34.1
   description: 'Motore di attestazione Spazio Genesi ETS. Full privacy: l''impronta SHA-256 si calcola sul client, il file non viene mai inviato al server. Contratto reale in italiano (non tradurre i nomi campo). Vedi https://attestazione.spaziogenesi.org per l''interfaccia utente e https://github.com/SPAZIO-GENESI/imgauth per il codice sorgente (AGPL-3.0).'
   contact:
@@ -50,6 +50,8 @@ paths:
           description: Rate limit per-IP (60/60s)
       tags:
       - Integrations
+      operationId: getApiIntegrations
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

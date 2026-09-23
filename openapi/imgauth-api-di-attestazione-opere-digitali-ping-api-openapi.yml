@@ -38,6 +38,8 @@ paths:
                     - 'null'
       tags:
       - Ping
+      operationId: getPing
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

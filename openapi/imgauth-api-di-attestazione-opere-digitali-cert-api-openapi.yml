@@ -44,6 +44,8 @@ paths:
           description: archivio non configurato
       tags:
       - Cert
+      operationId: getApiCert
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:

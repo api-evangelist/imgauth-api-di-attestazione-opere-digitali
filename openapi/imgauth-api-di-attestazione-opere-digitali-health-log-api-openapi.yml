@@ -36,6 +36,8 @@ paths:
                 type: object
       tags:
       - Health Log
+      operationId: getApiHealthLog
+      x-operation-id-source: derived
 components:
   securitySchemes:
     agentBearer:
