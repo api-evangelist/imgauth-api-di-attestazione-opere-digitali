@@ -1,0 +1,12 @@
+{
+ "url": "https://imgauth.spaziogenesi.org/openapi.json",
+ "requested_url": "https://imgauth.spaziogenesi.org/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 37364,
+ "sha256": "44ef9278815548d6efbc605b5ff5304cb33bb5a4698134b82e897add88be8b81",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.947), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
