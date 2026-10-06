@@ -40,7 +40,7 @@ accessModel:
   generated: '2026-09-03'
   method: derived
 created: '2026-07-19'
-modified: '2026-08-11'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 image: https://attestazione.spaziogenesi.org/og.png
 tags:
@@ -361,6 +361,10 @@ generated:
   confidence: 95
   at: '2026-07-19T13:45:33.951Z'
 common:
+- url: https://spaziogenesi.org/news/
+  type: Blog
+- url: https://spaziogenesi.org/news/rss.xml
+  type: BlogRSS
 - type: Website
   url: https://www.spaziogenesi.org/
 - type: License
