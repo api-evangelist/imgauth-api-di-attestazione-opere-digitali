@@ -50,3 +50,9 @@ components:
       in: header
       name: X-SG-Voucher
       description: 'Voucher firmato stateless (P25 §2.7): ottenuto SOLO tramite il flusso OAuth "Attesta con la tua email" sul sito — non c''è un endpoint pubblico in questo contratto che lo emette. TTL 8h. Bypassa il solo Turnstile su /api/hash e /api/cert-pdf, applica pool/tetto di un''eventuale convenzione o la fascia Professionale — stesso principio del bearer agente.'
+x-provenance:
+  method: harvested
+  publisher: imgauth — API di attestazione opere digitali
+  source: https://imgauth.spaziogenesi.org/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
