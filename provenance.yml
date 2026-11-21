@@ -62,6 +62,9 @@ artifacts:
   heartbeat/2026-11-13.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-20.yml:
+    method: unknown
+    evidence: no authorship recorded
   integrations/_index.yml:
     method: generated
     evidence: carries an API Evangelist house phrase
@@ -71,7 +74,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-06T143934.yml:
+  kin/checks-2026-11-13T214628.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -140,6 +143,9 @@ artifacts:
   kin/score-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-13T214628.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/imgauth-api-di-attestazione-opere-digitali-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -201,9 +207,51 @@ artifacts:
   openapi/imgauth-api-di-attestazione-opere-digitali-verify-api-openapi.yml:
     method: harvested
     evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-agent-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-badge-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-c-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-cert-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-cert-pdf-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-hash-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-health-log-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-integrations-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-integrazioni-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/imgauth-api-di-attestazione-opere-digitali-openapi-overlay.yaml:
     method: derived
     evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/imgauth-api-di-attestazione-opere-digitali-ots-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-ping-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-status-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-status-history-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/imgauth-api-di-attestazione-opere-digitali-verify-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   packages/imgauth-api-di-attestazione-opere-digitali-packages.yml:
     method: searched
     evidence: declared in the artifact
@@ -241,9 +289,6 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/imgauth-api-di-attestazione-opere-digitali-verify-a-work.md:
-    method: generated
-    evidence: declared in the artifact
-  sla/imgauth-api-di-attestazione-opere-digitali-sla.yml:
     method: generated
     evidence: declared in the artifact
   terms/imgauth-api-di-attestazione-opere-digitali-terms-of-service.yml:
